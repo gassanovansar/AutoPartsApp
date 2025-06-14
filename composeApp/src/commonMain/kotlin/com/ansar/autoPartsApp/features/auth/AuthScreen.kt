@@ -45,52 +45,55 @@ class AuthScreen : Screen {
                 }
             }
         }
-        PageContainer(content = {
-            Column(Modifier.align(alignment = Alignment.Center)) {
-                Box(
-                    Modifier.size(32.dp).align(Alignment.CenterHorizontally)
-                        .background(AppTheme.colors.mainColor)
-                )
-                Text(
-                    text = "Войдите в свой аккаунт",
-                    style = AppTheme.typography.bold.copy(
-                        fontSize = 16.sp,
-                        color = AppTheme.colors.text
-                    ),
-                    modifier = Modifier.align(Alignment.CenterHorizontally),
-                    textAlign = TextAlign.Center
-                )
+        PageContainer(
+            isLoading = viewModel.status.collectAsState(false),
+            error = viewModel.error.collectAsState(initial = null),
+            content = {
+                Column(Modifier.align(alignment = Alignment.Center)) {
+                    Box(
+                        Modifier.size(32.dp).align(Alignment.CenterHorizontally)
+                            .background(AppTheme.colors.mainColor)
+                    )
+                    Text(
+                        text = "Войдите в свой аккаунт",
+                        style = AppTheme.typography.bold.copy(
+                            fontSize = 16.sp,
+                            color = AppTheme.colors.text
+                        ),
+                        modifier = Modifier.align(Alignment.CenterHorizontally),
+                        textAlign = TextAlign.Center
+                    )
 
-                Card(
-                    modifier = Modifier.padding(horizontal = 48.dp).padding(top = 32.dp),
-                    border = BorderStroke(1.dp, AppTheme.colors.border),
-                    shape = RoundedCornerShape(8.dp)
-                ) {
-                    Column {
-                        BaseTextFiled(
-                            value = state.login,
-                            hint = "Login",
-                            shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
-                            error = state.hasLoginError
-                        ) { viewModel.changeLogin(it) }
-                        BaseTextFiled(
-                            value = state.password,
-                            hint = "Password",
-                            shape = RoundedCornerShape(bottomEnd = 8.dp, bottomStart = 8.dp),
-                            type = AppTextFiledType.PASSWORD,
-                            error = state.hasPasswordError
-                        ) { viewModel.changePassword(it) }
+                    Card(
+                        modifier = Modifier.padding(horizontal = 48.dp).padding(top = 32.dp),
+                        border = BorderStroke(1.dp, AppTheme.colors.border),
+                        shape = RoundedCornerShape(8.dp)
+                    ) {
+                        Column {
+                            BaseTextFiled(
+                                value = state.login,
+                                hint = "Login",
+                                shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
+                                error = state.hasLoginError
+                            ) { viewModel.changeLogin(it) }
+                            BaseTextFiled(
+                                value = state.password,
+                                hint = "Password",
+                                shape = RoundedCornerShape(bottomEnd = 8.dp, bottomStart = 8.dp),
+                                type = AppTextFiledType.PASSWORD,
+                                error = state.hasPasswordError
+                            ) { viewModel.changePassword(it) }
+                        }
+                    }
+                    PrimaryButton(
+                        text = "Войти",
+                        modifier = Modifier.fillMaxWidth().padding(top = 32.dp)
+                            .padding(horizontal = 48.dp)
+                    ) {
+                        viewModel.auth()
                     }
                 }
-                PrimaryButton(
-                    text = "Войти",
-                    modifier = Modifier.fillMaxWidth().padding(top = 32.dp)
-                        .padding(horizontal = 48.dp)
-                ) {
-                    viewModel.auth()
-                }
-            }
-        })
+            })
 
     }
 

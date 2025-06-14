@@ -42,6 +42,7 @@ enum class AppTextFiledType {
 
 @Composable
 fun BaseTextFiled(
+    modifier: Modifier = Modifier,
     value: String,
     hint: String,
     shape: Shape = RoundedCornerShape(8.dp),
@@ -50,6 +51,7 @@ fun BaseTextFiled(
     right: @Composable (BoxScope.() -> Unit)? = null,
     fill: Boolean = true,
     error: Boolean = false,
+    mini: Boolean = false,
     onValueChange: (String) -> Unit
 ) {
     var _value by remember(value) { mutableStateOf(value) }
@@ -60,7 +62,7 @@ fun BaseTextFiled(
     val density = LocalDensity.current
     val errorColor = if (_error) AppTheme.colors.error.copy(alpha = 0.3f) else AppTheme.colors.white
     Card(
-        modifier = Modifier.fillMaxWidth().background(errorColor).onSizeChanged {
+        modifier = modifier.fillMaxWidth().background(errorColor).onSizeChanged {
             with(density) {
                 size = it.height.toDp()
             }
@@ -71,7 +73,8 @@ fun BaseTextFiled(
     ) {
         Row(modifier = Modifier.background(errorColor)) {
             BasicTextField(
-                modifier = Modifier.fillMaxWidth().background(errorColor).padding(16.dp)
+                modifier = Modifier.fillMaxWidth().background(errorColor)
+                    .padding(if (mini) 8.dp else 16.dp)
                     .onFocusChanged { focusState ->
                         isFocused = focusState.isFocused
                     }.weight(1f, fill),

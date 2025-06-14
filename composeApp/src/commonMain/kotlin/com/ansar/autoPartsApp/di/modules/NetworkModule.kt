@@ -31,9 +31,9 @@ import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
 enum class Env(val value: String, val url: String) {
-    DEV("dev", "http://api.dextra.loc/"),
-    STAGE("stage", "http://api.dextra.loc/"),
-    PROD("prod", "http://api.dextra.loc/")
+    DEV("dev", "https://dextra-backend-api.x-lab.digital/"),
+    STAGE("stage", "https://dextra-backend-api.x-lab.digital/"),
+    PROD("prod", "https://dextra-backend-api.x-lab.digital/")
 }
 
 

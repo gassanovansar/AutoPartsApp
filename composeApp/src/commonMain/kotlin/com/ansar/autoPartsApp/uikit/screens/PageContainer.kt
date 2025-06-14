@@ -24,6 +24,8 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
+import com.ansar.autoPartsApp.domain.manager.Notification
+import com.ansar.autoPartsApp.uikit.components.NotificationCenter
 import com.ansar.autoPartsApp.uikit.designe.LoadingView
 import com.ansar.autoPartsApp.uikit.theme.AppTheme
 
@@ -36,7 +38,7 @@ fun PageContainer(
     brush: Brush? = null,
     fill: Boolean = true,
     isLoading: State<Boolean> = mutableStateOf(false),
-//    error: State<Notification?> = mutableStateOf(null),
+    error: State<Notification?> = mutableStateOf(null),
     header: @Composable (() -> Unit)? = null,
     content: @Composable BoxScope.() -> Unit,
     footer: @Composable (BoxScope.() -> Unit)? = null,
@@ -89,7 +91,7 @@ fun PageContainer(
     }
 
 
-//    NotificationCenter(error.value)
+    NotificationCenter(error.value)
 
     if (isLoading.value) {
         LoadingView(
