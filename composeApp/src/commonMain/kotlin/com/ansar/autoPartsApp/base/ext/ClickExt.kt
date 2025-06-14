@@ -18,6 +18,17 @@ fun Modifier.clickableRound(
         }
 }
 
+fun Modifier.clickableRound(
+    clip: RoundedCornerShape,
+    enabled: Boolean = true,
+    onClick: () -> Unit
+): Modifier {
+    return clip(clip)
+        .clickable(enabled = enabled) {
+            onClick()
+        }
+}
+
 //@Composable
 //fun Modifier.clickableApp(
 //    shimmer: Boolean = false,

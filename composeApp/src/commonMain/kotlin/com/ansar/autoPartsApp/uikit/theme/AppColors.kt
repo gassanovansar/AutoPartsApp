@@ -12,6 +12,8 @@ interface AppColors {
     val hint: Color
     val white: Color
     val error: Color
+    val red: Color
+    val green: Color
 }
 
 
@@ -19,7 +21,8 @@ class AppColorsImpl(
     override val mainColor: Color, override val text: Color, override val background: Color,
     override val border: Color,
     override val borderClick: Color,
-    override val hint: Color, override val white: Color, override val error: Color
+    override val hint: Color, override val white: Color, override val error: Color,
+    override val red: Color, override val green: Color
 
 
 ) : AppColors
@@ -32,7 +35,10 @@ internal fun appLightColors() = AppColorsImpl(
     borderClick = Color(0xFF9FA4B4),
     hint = Color(0xFF6E767E),
     white = Color(0xFFFFFFFF),
-    error = Color(0xFFEE2C3F)
+    error = Color(0xFFEE2C3F),
+    red = Color(0xFFEF4444),
+    green = Color(0xFF0CBA81)
+
 
 )
 
@@ -45,7 +51,9 @@ internal fun appDarkColors() = AppColorsImpl(
     borderClick = Color(0xFF9FA4B4),
     hint = Color(0xFF6E767E),
     white = Color(0xFFFFFFFF),
-    error = Color(0xFFEE2C3F)
+    error = Color(0xFFEE2C3F),
+    red = Color(0xFFEF4444),
+    green = Color(0xFF0CBA81)
 
 
 )
