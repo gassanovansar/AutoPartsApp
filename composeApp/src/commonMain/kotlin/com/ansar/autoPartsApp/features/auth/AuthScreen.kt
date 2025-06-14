@@ -23,6 +23,7 @@ import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import com.ansar.autoPartsApp.features.main.MainScreen
 import com.ansar.autoPartsApp.uikit.screens.PageContainer
 import com.ansar.autoPartsApp.uikit.theme.AppTheme
 import com.ansar.autoPartsApp.uikit.designe.BaseTextFiled
@@ -40,7 +41,7 @@ class AuthScreen : Screen {
         LaunchedEffect(viewModel) {
             launch {
                 viewModel.container.sideEffectFlow.collect {
-
+                    navigator.replaceAll(MainScreen())
                 }
             }
         }
@@ -69,13 +70,15 @@ class AuthScreen : Screen {
                         BaseTextFiled(
                             value = state.login,
                             hint = "Login",
-                            shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp)
+                            shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
+                            error = state.hasLoginError
                         ) { viewModel.changeLogin(it) }
                         BaseTextFiled(
                             value = state.password,
                             hint = "Password",
                             shape = RoundedCornerShape(bottomEnd = 8.dp, bottomStart = 8.dp),
-                            type = AppTextFiledType.PASSWORD
+                            type = AppTextFiledType.PASSWORD,
+                            error = state.hasPasswordError
                         ) { viewModel.changePassword(it) }
                     }
                 }
@@ -83,7 +86,9 @@ class AuthScreen : Screen {
                     text = "Войти",
                     modifier = Modifier.fillMaxWidth().padding(top = 32.dp)
                         .padding(horizontal = 48.dp)
-                ) {}
+                ) {
+                    viewModel.auth()
+                }
             }
         })
 

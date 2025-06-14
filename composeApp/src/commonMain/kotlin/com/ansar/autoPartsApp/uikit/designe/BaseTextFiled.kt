@@ -49,15 +49,18 @@ fun BaseTextFiled(
     left: @Composable (BoxScope.() -> Unit)? = null,
     right: @Composable (BoxScope.() -> Unit)? = null,
     fill: Boolean = true,
+    error: Boolean = false,
     onValueChange: (String) -> Unit
 ) {
     var _value by remember(value) { mutableStateOf(value) }
+    var _error by remember(error) { mutableStateOf(error) }
     var isFocused by remember { mutableStateOf(false) }
     var visualTransformation by remember { mutableStateOf(false) }
     var size by remember { mutableStateOf(0.dp) }
     val density = LocalDensity.current
+    val errorColor = if (_error) AppTheme.colors.error.copy(alpha = 0.3f) else AppTheme.colors.white
     Card(
-        modifier = Modifier.fillMaxWidth().background(AppTheme.colors.white).onSizeChanged {
+        modifier = Modifier.fillMaxWidth().background(errorColor).onSizeChanged {
             with(density) {
                 size = it.height.toDp()
             }
@@ -66,10 +69,9 @@ fun BaseTextFiled(
         else BorderStroke(1.dp, AppTheme.colors.border),
         shape = shape
     ) {
-
-        Row(modifier = Modifier.background(AppTheme.colors.white)) {
+        Row(modifier = Modifier.background(errorColor)) {
             BasicTextField(
-                modifier = Modifier.fillMaxWidth().background(AppTheme.colors.white).padding(16.dp)
+                modifier = Modifier.fillMaxWidth().background(errorColor).padding(16.dp)
                     .onFocusChanged { focusState ->
                         isFocused = focusState.isFocused
                     }.weight(1f, fill),
@@ -111,7 +113,7 @@ fun BaseTextFiled(
                 cursorBrush = SolidColor(AppTheme.colors.text)
             )
             if (type == AppTextFiledType.PASSWORD) {
-                Box(modifier = Modifier.height(size).background(AppTheme.colors.white)) {
+                Box(modifier = Modifier.height(size).background(errorColor)) {
                     Image(
                         painter = if (!visualTransformation) AppResource.image.passwordoff.painterResource() else AppResource.image.passwordon.painterResource(),
                         contentDescription = null,

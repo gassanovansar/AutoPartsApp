@@ -1,7 +1,5 @@
 package com.ansar.autoPartsApp.features.auth
 
-import com.ansar.autoPartsApp.base.ext.isEmail
-
 data class AuthState(
     val login: String,
     val hasLoginError: Boolean,
@@ -9,7 +7,7 @@ data class AuthState(
     val hasPasswordError: Boolean
 ) {
 
-    val isValid = login.isEmail() && password.length > 8
+    val isValid = login.isNotBlank() && password.length >= 8
 
     companion object {
         val Default = AuthState(

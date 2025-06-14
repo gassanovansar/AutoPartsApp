@@ -8,35 +8,34 @@ import com.ansar.autoPartsApp.domain.manager.store.TokenStore
 import com.ansar.autoPartsApp.platform.httpLogger
 import de.jensklingenberg.ktorfit.Ktorfit
 import de.jensklingenberg.ktorfit.ktorfit
-import io.ktor.client.*
-import io.ktor.client.plugins.*
+import io.ktor.client.HttpClient
+import io.ktor.client.plugins.HttpRedirect
+import io.ktor.client.plugins.HttpResponseValidator
+import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.providers.bearer
-import io.ktor.client.plugins.contentnegotiation.*
-import io.ktor.client.plugins.logging.*
-import io.ktor.client.request.*
-import io.ktor.client.statement.*
-import io.ktor.http.*
-import io.ktor.serialization.kotlinx.json.*
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.defaultRequest
+import io.ktor.client.plugins.logging.LogLevel
+import io.ktor.client.plugins.logging.Logger
+import io.ktor.client.plugins.logging.Logging
+import io.ktor.client.request.HttpSendPipeline
+import io.ktor.client.request.header
+import io.ktor.client.statement.bodyAsText
+import io.ktor.http.HttpStatusCode
+import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import org.koin.core.module.dsl.factoryOf
-import org.koin.core.qualifier.named
 import org.koin.dsl.module
-//https://capper-api.gnt-it.ru/
-//https://api.cappers.space/
-//
+
 enum class Env(val value: String, val url: String) {
-    DEV("dev", "https://capper-api.gnt-it.ru/"),
-    STAGE("stage", "https://capper-api.gnt-it.ru/"),
-    PROD("prod", "https://capper-api.gnt-it.ru/")
+    DEV("dev", "http://api.dextra.loc/"),
+    STAGE("stage", "http://api.dextra.loc/"),
+    PROD("prod", "http://api.dextra.loc/")
 }
-//enum class Env(val value: String, val url: String) {
-//    DEV("dev", "https://api.cappers.space/"),
-//    STAGE("stage", "https://api.cappers.space/"),
-//    PROD("prod", "https://api.cappers.space/")
-//}
+
 
 
 internal val networkModule = module {

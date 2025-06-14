@@ -8,6 +8,11 @@ import com.ansar.autoPartsApp.domain.repository.AuthRepository
 
 class AuthRepositoryImpl(private val api: AuthApi) : AuthRepository {
     override suspend fun auth(login: String, password: String): Either<Failure, Unit> {
-        return apiCall { api.auth() }
+        return apiCall {
+            api.auth(
+                username = login,
+                password = password
+            )
+        }
     }
 }
