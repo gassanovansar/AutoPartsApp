@@ -11,6 +11,8 @@ internal val useCaseModule = module {
     factoryOf(::AuthUseCase)
     factoryOf(::BrandUseCase)
     factoryOf(::CategoryUseCase)
+    factoryOf(::ProductsUseCase)
+    factoryOf(::ProductUseCase)
 
 
 }

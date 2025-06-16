@@ -9,5 +9,6 @@ import org.koin.dsl.module
 internal val repositoryModule = module {
     factoryOf(::AuthRepositoryImpl) { bind<AuthRepository>() }
     factoryOf(::FilterRepositoryImpl) { bind<FilterRepository>() }
+    factoryOf(::ProductRepositoryImpl) { bind<ProductRepository>() }
 
 }

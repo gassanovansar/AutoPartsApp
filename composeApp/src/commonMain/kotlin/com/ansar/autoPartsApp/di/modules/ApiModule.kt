@@ -8,5 +8,6 @@ import org.koin.dsl.module
 internal val apiModule = module {
     factory { get<Ktorfit>().create<AuthApi>() }
     factory { get<Ktorfit>().create<FilterApi>() }
+    factory { get<Ktorfit>().create<ProductApi>() }
 
 }

@@ -44,7 +44,7 @@ enum class AppTextFiledType {
 fun BaseTextFiled(
     modifier: Modifier = Modifier,
     value: String,
-    hint: String,
+    hint: String = "",
     shape: Shape = RoundedCornerShape(8.dp),
     type: AppTextFiledType = AppTextFiledType.TEXT,
     left: @Composable (BoxScope.() -> Unit)? = null,
