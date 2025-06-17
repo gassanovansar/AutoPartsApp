@@ -27,7 +27,9 @@ class ProductRepositoryImpl(private val api: ProductApi) : ProductRepository {
                 page = currentPage, limit = perPage
             )
         }, mapResponse = {
-            it.data?.toUI().orEmpty()
+            it.data?.list?.map {
+                it.toUI()
+            }.orEmpty()
         })
     }
 

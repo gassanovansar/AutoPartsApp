@@ -16,7 +16,7 @@ interface ProductApi {
         @Query("modelId") modelId: List<Int>?,
         @Query("page") page: Int,
         @Query("limit") limit: Int,
-    ): BaseResponse<BaseProductResponse>
+    ): BaseResponse<BaseProductResponse<ProductResponse>>
 
     @GET("/v1/product/get")
     suspend fun product(

@@ -60,7 +60,9 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.ansar.autoPartsApp.base.SelectableItem
 import com.ansar.autoPartsApp.base.ext.clickableRound
+import com.ansar.autoPartsApp.base.ext.ifBlank
 import com.ansar.autoPartsApp.base.ext.top
+import com.ansar.autoPartsApp.domain.model.ProductUI
 import com.ansar.autoPartsApp.features.product.ProductScreen
 import com.ansar.autoPartsApp.uikit.designe.AutoComplete
 import com.ansar.autoPartsApp.uikit.designe.BaseTextFiled
@@ -253,7 +255,7 @@ class MainScreen : Screen {
                         items(state.products) {
                             Item(Modifier.clickableRound(8.dp) {
                                 navigator.push(ProductScreen(it.id))
-                            }, false)
+                            }, it)
                         }
                     }
                 })
@@ -445,7 +447,7 @@ private fun Chip(title: String, selected: Boolean, onClick: () -> Unit) {
 
 
 @Composable
-fun Item(modifier: Modifier, inStock: Boolean) {
+fun Item(modifier: Modifier, item: ProductUI) {
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(4.dp),
@@ -455,23 +457,20 @@ fun Item(modifier: Modifier, inStock: Boolean) {
         )
     ) {
         Column {
-            Table(title = "Код", description = "00-00104437")
+            Table(title = "Код", description = item.id.toString().ifBlank { "-" })
             Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)
-            Table(title = "Артикул", description = "W343405SA")
+            Table(title = "Артикул", description = item.article.ifBlank { "-" })
             Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)
-            Table(title = "OEM", description = "-")
+            Table(title = "OEM", description = item.oem.ifBlank { "-" })
             Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)
-            Table(
-                title = "Наименование",
-                description = "Болт М12 / 1,5 / 48.5/31 (шпилька), JN-821FD Mazda, Hyundai, Kia, Ford"
-            )
+            Table(title = "Наименование", description = item.description.ifBlank { "-" })
             Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)
-            Table(title = "Бренд", description = "WINKOD")
+            Table(title = "Бренд", description = item.brand.title.ifBlank { "-" })
             Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)
-            Table(title = "ЕИ", description = "шт")
+            Table(title = "ЕИ", description = item.unit.ifBlank { "-" })
             Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)
-            Table(title = "Цена", description = "5 308")
-            if (!inStock) {
+            Table(title = "Цена", description = item.price.ifBlank { "-" })
+            if (item.isAvailable == 0) {
                 Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)
                 Text(
                     modifier = Modifier.align(Alignment.CenterHorizontally),

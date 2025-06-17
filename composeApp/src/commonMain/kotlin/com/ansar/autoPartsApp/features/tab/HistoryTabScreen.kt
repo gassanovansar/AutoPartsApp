@@ -24,7 +24,7 @@ internal object HistoryTabScreen : Tab {
         @Composable
         get() = TabOptions(
             index = 1.toUShort(),
-            title = "Главная",
+            title = "История",
             icon = AppResourceImages.purchases.painterResource()
         )
 }

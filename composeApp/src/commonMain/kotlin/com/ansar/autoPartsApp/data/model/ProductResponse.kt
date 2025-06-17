@@ -4,8 +4,8 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-class BaseProductResponse(
-    val list: List<ProductResponse>?,
+class BaseProductResponse<T>(
+    val list: List<T>?,
     val pagination: BasePagination?
 )
 
@@ -29,4 +29,10 @@ class ProductResponse(
     val brand: BrandResponse?,
     val category: BrandResponse?,
     val price: String?,
+    val article: String?,
+    val oem: String?,
+    val unit: String?,
+    val model: BrandResponse?,
+    @SerialName("is_available")
+    val isAvailable: Int?
 )

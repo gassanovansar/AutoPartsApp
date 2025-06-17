@@ -1,22 +1,15 @@
 package com.ansar.autoPartsApp.features.history
 
-import com.ansar.autoPartsApp.base.SelectableDropDownItem
-import com.ansar.autoPartsApp.domain.model.ProductUI
+import com.ansar.autoPartsApp.domain.model.OrderUI
 
 data class HistoryState(
-    val search: String,
-    val brand: List<SelectableDropDownItem>,
-    val category: List<SelectableDropDownItem>,
-    val products: List<ProductUI>,
+    val orders: List<OrderUI>,
     val page: Int,
     val limit: Int
 ) {
     companion object {
         val Default = HistoryState(
-            search = "",
-            brand = emptyList(),
-            category = emptyList(),
-            products = emptyList(),
+            orders = emptyList(),
             page = 1,
             limit = 20
         )

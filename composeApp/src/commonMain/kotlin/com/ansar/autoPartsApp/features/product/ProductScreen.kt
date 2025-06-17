@@ -57,7 +57,7 @@ class ProductScreen(private val id: Int) : Screen {
                 Toolbar(leftIcon = { BackIcon() }, line = true)
             }, content = {
                 Column(modifier = Modifier.fillMaxSize()) {
-                    Item(Modifier.padding(16.dp), false)
+                    Item(Modifier.padding(16.dp), state.product)
 
                     Row(modifier = Modifier.align(Alignment.End).padding(horizontal = 16.dp)) {
                         Box(
@@ -107,7 +107,8 @@ class ProductScreen(private val id: Int) : Screen {
                     }
                     PrimaryButton(
                         text = "Заказать",
-                        modifier = Modifier.fillMaxWidth().padding(16.dp)
+                        modifier = Modifier.fillMaxWidth().padding(16.dp),
+                        enabled = state.product.isAvailable > 0
                     ) {
                         viewModel.createOrder(id)
                     }

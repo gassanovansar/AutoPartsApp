@@ -60,7 +60,9 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.ansar.autoPartsApp.base.SelectableItem
 import com.ansar.autoPartsApp.base.ext.clickableRound
+import com.ansar.autoPartsApp.base.ext.ifBlank
 import com.ansar.autoPartsApp.base.ext.top
+import com.ansar.autoPartsApp.domain.model.OrderUI
 import com.ansar.autoPartsApp.features.product.ProductScreen
 import com.ansar.autoPartsApp.uikit.designe.AutoComplete
 import com.ansar.autoPartsApp.uikit.designe.BaseTextFiled
@@ -76,10 +78,6 @@ class HistoryScreen : Screen {
         val navigator = LocalNavigator.currentOrThrow
         val viewModel = rememberScreenModel { HistoryViewModel() }
         val state by viewModel.stateFlow.collectAsState()
-        var showLeftDialog by remember { mutableStateOf(false) }
-        var showRightDialog by remember { mutableStateOf(false) }
-        var size by remember { mutableStateOf(0.dp) }
-        val density = LocalDensity.current
 
         val canLoad by viewModel.canLoad.collectAsState()
         val lazyListState = rememberLazyListState()
@@ -89,10 +87,10 @@ class HistoryScreen : Screen {
                     ?: -9) >= (lazyListState.layoutInfo.totalItemsCount - 6)
             }
         }
-//        LaunchedEffect(key1 = shouldStartPaginate.value) {
-//            if (canLoad && shouldStartPaginate.value && !viewModel.status.value)
-////                viewModel.loadProducts()
-//        }
+        LaunchedEffect(key1 = shouldStartPaginate.value) {
+            if (canLoad && shouldStartPaginate.value && !viewModel.status.value)
+                viewModel.loadOrders()
+        }
 
 
         Box(modifier = Modifier.fillMaxSize()) {
@@ -111,10 +109,10 @@ class HistoryScreen : Screen {
                         contentPadding = PaddingValues(16.dp),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        items(state.products) {
+                        items(state.orders) {
                             Item(Modifier.clickableRound(8.dp) {
-                                navigator.push(ProductScreen(it.id))
-                            }, false)
+//                                navigator.push(ProductScreen(it.id))
+                            }, it)
                         }
                     }
                 })
@@ -124,7 +122,7 @@ class HistoryScreen : Screen {
 }
 
 @Composable
-fun Item(modifier: Modifier, inStock: Boolean) {
+fun Item(modifier: Modifier, item: OrderUI) {
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(4.dp),
@@ -134,22 +132,24 @@ fun Item(modifier: Modifier, inStock: Boolean) {
         )
     ) {
         Column {
-            Table(title = "Код", description = "00-00104437")
+            Table(title = "Код", description = item.product.id.toString().ifBlank { "-" })
             Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)
-            Table(title = "Артикул", description = "W343405SA")
+            Table(title = "Артикул", description = item.product.article.ifBlank { "-" })
             Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)
-            Table(title = "OEM", description = "-")
+            Table(title = "OEM", description = item.product.oem.ifBlank { "-" })
             Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)
             Table(
                 title = "Наименование",
-                description = "Болт М12 / 1,5 / 48.5/31 (шпилька), JN-821FD Mazda, Hyundai, Kia, Ford"
+                description = item.product.description.ifBlank { "-" }
             )
             Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)
-            Table(title = "Бренд", description = "WINKOD")
+            Table(title = "Бренд", description = item.product.brand.title.ifBlank { "-" })
             Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)
-            Table(title = "Цена", description = "5 308")
+            Table(title = "Цена", description = item.product.price.ifBlank { "-" })
             Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)
-            Table(title = "Количество", description = "10 шт")
+            Table(title = "Общая сумма", description = item.price.ifBlank { "-" })
+            Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)
+            Table(title = "Количество", description = "${item.count} ${item.product.unit}")
         }
 
     }
