@@ -139,6 +139,9 @@ internal fun AutoComplete(
                                 tint = Color.Black
                             )
                         }
+                    },
+                    isFocused = {
+                            expanded = it
                     }
                 ) {
                     search = it

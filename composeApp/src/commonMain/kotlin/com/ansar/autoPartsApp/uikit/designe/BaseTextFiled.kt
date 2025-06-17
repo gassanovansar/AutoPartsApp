@@ -52,6 +52,7 @@ fun BaseTextFiled(
     fill: Boolean = true,
     error: Boolean = false,
     mini: Boolean = false,
+    isFocused: (Boolean) -> Unit = {},
     onValueChange: (String) -> Unit
 ) {
     var _value by remember(value) { mutableStateOf(value) }
@@ -77,6 +78,7 @@ fun BaseTextFiled(
                     .padding(if (mini) 8.dp else 16.dp)
                     .onFocusChanged { focusState ->
                         isFocused = focusState.isFocused
+                        isFocused(focusState.isFocused)
                     }.weight(1f, fill),
                 value = _value,
                 onValueChange = {
