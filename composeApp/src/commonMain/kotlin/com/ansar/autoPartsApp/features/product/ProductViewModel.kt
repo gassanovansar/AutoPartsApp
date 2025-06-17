@@ -22,7 +22,7 @@ class ProductViewModel : BaseScreenModel<ProductState, ProductEvent>(ProductStat
     }
 
     fun createOrder(id: Int) = intent {
-        if (state.count.isNotBlank() || state.count.toInt() > 0) {
+        if (state.count.isNotBlank() && state.count.toInt() > 0) {
             launchOperation(operation = { scope ->
                 createOrderUseCase(scope, CreateOrderUseCase.Params(id, state.count.toInt()))
             }, success = {
