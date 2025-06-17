@@ -11,8 +11,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -57,6 +60,7 @@ class TabScreen(private val tab: Tab = MainTabScreen) : Screen, KoinComponent {
                     it.current.Content()
                 },
                 footer = {
+
                     val hiddenBottom by hiddenBottom.collectAsState()
                     AnimatedVisibility(
                         !hiddenBottom, enter = expandVertically(
@@ -68,12 +72,17 @@ class TabScreen(private val tab: Tab = MainTabScreen) : Screen, KoinComponent {
                             this.durationMillis = 50
                         })
                     ) {
-                        Row(
-                            modifier = Modifier
-                                .background(AppTheme.colors.mainColor)
-                        ) {
-                            TabNavItem(MainTabScreen)
-                            TabNavItem(HistoryTabScreen)
+                        Column {
+                            Divider(
+                                Modifier.fillMaxWidth().height(1.dp)
+                                    .background(AppTheme.colors.mainColor)
+                            )
+                            Row(
+                                modifier = Modifier
+                                    .background(AppTheme.colors.mainColor)
+                            ) {
+                                TabNavItem(MainTabScreen)
+                                TabNavItem(HistoryTabScreen)
 //                            TabNavItem(ProfileTabScreen)
 //                            val role by screenModel.sessionManager.role.collectAsState()
 //                            when (role) {
@@ -92,7 +101,10 @@ class TabScreen(private val tab: Tab = MainTabScreen) : Screen, KoinComponent {
 //                            }
 
 //                            TabNavItem(MenuTabScreen)
+                            }
+
                         }
+
                     }
 
                 }
@@ -105,8 +117,8 @@ class TabScreen(private val tab: Tab = MainTabScreen) : Screen, KoinComponent {
         val tabNavigator = LocalTabNavigator.current
         val navigator = LocalNavigator.currentOrThrow
         val selected = tabNavigator.current == tab
-        val color = if (selected) AppTheme.colors.background else AppTheme.colors.mainColor
-        val background = if (selected) AppTheme.colors.mainColor else AppTheme.colors.background
+        val color = if (selected) AppTheme.colors.white else AppTheme.colors.mainColor
+        val background = if (selected) AppTheme.colors.mainColor else AppTheme.colors.white
         val textStyle = if (selected) AppTheme.typography.semiBold else AppTheme.typography.regular
 
         Column(
