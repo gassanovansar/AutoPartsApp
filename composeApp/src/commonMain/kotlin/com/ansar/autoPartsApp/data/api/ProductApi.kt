@@ -13,6 +13,7 @@ interface ProductApi {
         @Query("title") title: String?,
         @Query("brandId") brandId: List<Int>?,
         @Query("categoryId") categoryId: List<Int>?,
+        @Query("modelId") modelId: List<Int>?,
         @Query("page") page: Int,
         @Query("limit") limit: Int,
     ): BaseResponse<BaseProductResponse>

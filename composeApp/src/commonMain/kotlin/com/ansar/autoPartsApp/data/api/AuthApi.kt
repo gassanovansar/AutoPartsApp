@@ -1,5 +1,6 @@
 package com.ansar.autoPartsApp.data.api
 
+import com.ansar.autoPartsApp.data.model.AuthResponse
 import de.jensklingenberg.ktorfit.http.Field
 import de.jensklingenberg.ktorfit.http.FormUrlEncoded
 import de.jensklingenberg.ktorfit.http.POST
@@ -12,5 +13,5 @@ interface AuthApi {
     suspend fun auth(
         @Field("username") username: String,
         @Field("password") password: String,
-    )
+    ):AuthResponse
 }

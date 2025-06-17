@@ -11,6 +11,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.ansar.autoPartsApp.features.auth.AuthScreen
+import com.ansar.autoPartsApp.features.tab.TabScreen
 import com.ansar.autoPartsApp.uikit.screens.PageContainer
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -47,7 +48,7 @@ class SplashScreen : Screen {
     private fun handleSideEffect(navigator: Navigator, sideEffect: SplashEvent) {
         when (sideEffect) {
             SplashEvent.Main -> {
-//                navigator.replaceAll(TabScreen())
+                navigator.replaceAll(TabScreen())
             }
 
             SplashEvent.Auth -> {

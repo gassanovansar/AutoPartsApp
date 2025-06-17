@@ -14,6 +14,7 @@ class ProductRepositoryImpl(private val api: ProductApi) : ProductRepository {
         title: String,
         brandId: List<Int>,
         categoryId: List<Int>,
+        modelId: List<Int>,
         currentPage: Int,
         perPage: Int
     ): Either<Failure, List<ProductUI>> {
@@ -22,6 +23,7 @@ class ProductRepositoryImpl(private val api: ProductApi) : ProductRepository {
                 title = title.ifBlank { null },
                 brandId = brandId.ifEmpty { null },
                 categoryId = categoryId.ifEmpty { null },
+                modelId = modelId.ifEmpty { null },
                 page = currentPage, limit = perPage
             )
         }, mapResponse = {

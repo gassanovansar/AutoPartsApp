@@ -160,7 +160,7 @@ class MainScreen : Screen {
                             modifier = Modifier.padding(top = 8.dp)
                         ) {
                             Card(
-                                modifier = Modifier.height(size).clickableRound(
+                                modifier = Modifier.height(size).width(80.dp).clickableRound(
                                     clip = RoundedCornerShape(
                                         topEnd = 8.dp,
                                         bottomEnd = 8.dp
@@ -176,12 +176,14 @@ class MainScreen : Screen {
                                     Text(
                                         modifier = Modifier.align(Alignment.Center)
                                             .padding(horizontal = 8.dp, vertical = 4.dp),
-                                        text = "LADA",
+                                        text = state.model.find { it.isSelected }?.data?.title.orEmpty(),
                                         style = AppTheme.typography.semiBold.copy(
                                             fontSize = 16.sp,
                                             color = AppTheme.colors.white,
                                             textAlign = TextAlign.Center,
-                                        )
+                                        ),
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis
                                     )
                                 }
 
@@ -192,10 +194,10 @@ class MainScreen : Screen {
                                     with(density) {
                                         size = it.height.toDp()
                                     }
-                                }, value = "", hint = "Наименование", mini = true,
+                                }, value = state.search, hint = "Наименование", mini = true,
                                 shape = RoundedCornerShape(topStart = 8.dp, bottomStart = 8.dp)
                             ) {
-
+                                viewModel.changeSearch(it)
                             }
 //                            Card(
 //                                modifier = Modifier.height(size).clickableRound(8.dp) {
@@ -257,7 +259,9 @@ class MainScreen : Screen {
                 })
             SlideInDialog(
                 visible = showLeftDialog,
-                onDismissRequest = { showLeftDialog = false },
+                onDismissRequest = {
+                    showLeftDialog = false
+                },
                 enter = expandHorizontally() + fadeIn(),
                 exit = shrinkHorizontally() + fadeOut(),
             ) {
@@ -267,10 +271,12 @@ class MainScreen : Screen {
                 ) {
                     Row(modifier = Modifier.padding(32.dp)) {
                         Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                            Chip()
-                            Chip()
-                            Chip()
-                            Chip()
+                            state.model.forEach {
+                                Chip(it.data.title, it.isSelected) {
+                                    viewModel.changeModel(it)
+                                    showLeftDialog = false
+                                }
+                            }
                         }
                     }
                 }
@@ -279,6 +285,7 @@ class MainScreen : Screen {
                 modifier = Modifier.align(Alignment.TopEnd),
                 visible = showRightDialog,
                 onDismissRequest = {
+                    viewModel.products()
                     showRightDialog = false
                 },
                 enter = expandHorizontally(
@@ -302,6 +309,7 @@ class MainScreen : Screen {
                                     shape = RoundedCornerShape(8.dp)
                                 ).clickableRound(8.dp) {
                                     showRightDialog = false
+                                    viewModel.products()
                                 },
                             ) {
                                 Text(
@@ -413,20 +421,22 @@ fun SlideInDialog(
 }
 
 @Composable
-private fun Chip(item: SelectableItem<String> = SelectableItem("LADA", true)) {
+private fun Chip(title: String, selected: Boolean, onClick: () -> Unit) {
 
     Box(
         Modifier.background(
-            if (item.isSelected) AppTheme.colors.white else Color.Transparent,
+            if (selected) AppTheme.colors.white else Color.Transparent,
             shape = RoundedCornerShape(8.dp)
-        ),
+        ).clickableRound(8.dp) {
+            onClick()
+        },
     ) {
         Text(
             modifier = Modifier.align(Alignment.Center).padding(horizontal = 8.dp, vertical = 4.dp),
-            text = "LADA",
+            text = title,
             style = AppTheme.typography.semiBold.copy(
                 fontSize = 16.sp,
-                color = if (item.isSelected) AppTheme.colors.text else AppTheme.colors.white,
+                color = if (selected) AppTheme.colors.text else AppTheme.colors.white,
                 textAlign = TextAlign.Center,
             )
         )

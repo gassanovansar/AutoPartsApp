@@ -37,7 +37,7 @@ import com.ansar.autoparts.AppResource
 import io.github.skeptick.libres.compose.painterResource
 
 enum class AppTextFiledType {
-    TEXT, PASSWORD
+    TEXT, PASSWORD, DIGIT
 }
 
 @Composable
@@ -80,8 +80,15 @@ fun BaseTextFiled(
                     }.weight(1f, fill),
                 value = _value,
                 onValueChange = {
-                    _value = it
-                    onValueChange(it)
+                    if (type == AppTextFiledType.DIGIT) {
+                        val filtered = it.filter { it.isDigit() }
+                        _value = filtered
+                        onValueChange(filtered)
+                    } else {
+                        _value = it
+                        onValueChange(it)
+                    }
+
                 },
                 textStyle = AppTheme.typography.medium.copy(
                     fontSize = 16.sp,
@@ -103,13 +110,14 @@ fun BaseTextFiled(
                     innerTextField()
                 },
                 visualTransformation = when (type) {
-                    AppTextFiledType.TEXT -> VisualTransformation.None
+                    AppTextFiledType.TEXT, AppTextFiledType.DIGIT -> VisualTransformation.None
                     AppTextFiledType.PASSWORD -> if (visualTransformation) VisualTransformation.None else PasswordVisualTransformation()
                 },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = when (type) {
                         AppTextFiledType.TEXT -> KeyboardType.Text
                         AppTextFiledType.PASSWORD -> KeyboardType.Text
+                        AppTextFiledType.DIGIT -> KeyboardType.Number
                     },
                     imeAction = ImeAction.Done
                 ),

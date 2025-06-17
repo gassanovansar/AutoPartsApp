@@ -13,6 +13,8 @@ internal val useCaseModule = module {
     factoryOf(::CategoryUseCase)
     factoryOf(::ProductsUseCase)
     factoryOf(::ProductUseCase)
+    factoryOf(::ModelUseCase)
+    factoryOf(::CreateOrderUseCase)
 
 
 }

@@ -18,6 +18,7 @@ import cafe.adriel.voyager.navigator.bottomSheet.BottomSheetNavigator
 import com.ansar.autoPartsApp.domain.manager.Notification
 import com.ansar.autoPartsApp.domain.manager.NotificationManager
 import com.ansar.autoPartsApp.features.main.MainScreen
+import com.ansar.autoPartsApp.features.splash.SplashScreen
 import com.ansar.autoPartsApp.uikit.components.NotificationCenter
 import com.ansar.autoPartsApp.uikit.theme.AppTheme
 import kotlinx.coroutines.flow.collectLatest
@@ -35,7 +36,7 @@ internal fun App() {
                     topEndPercent = 8
                 )
             ) {
-                Navigator(MainScreen())
+                Navigator(SplashScreen())
 //                DebugView()
             }
             NotificationContainer()

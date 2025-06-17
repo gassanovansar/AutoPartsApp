@@ -24,6 +24,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.ansar.autoPartsApp.features.main.MainScreen
+import com.ansar.autoPartsApp.features.tab.TabScreen
 import com.ansar.autoPartsApp.uikit.screens.PageContainer
 import com.ansar.autoPartsApp.uikit.theme.AppTheme
 import com.ansar.autoPartsApp.uikit.designe.BaseTextFiled
@@ -41,7 +42,7 @@ class AuthScreen : Screen {
         LaunchedEffect(viewModel) {
             launch {
                 viewModel.container.sideEffectFlow.collect {
-                    navigator.replaceAll(MainScreen())
+                    navigator.replaceAll(TabScreen())
                 }
             }
         }

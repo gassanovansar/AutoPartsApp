@@ -26,7 +26,9 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
+import com.ansar.autoPartsApp.base.ext.clickableRound
 import com.ansar.autoPartsApp.features.main.Item
+import com.ansar.autoPartsApp.uikit.designe.AppTextFiledType
 import com.ansar.autoPartsApp.uikit.designe.BaseTextFiled
 import com.ansar.autoPartsApp.uikit.designe.PrimaryButton
 import com.ansar.autoPartsApp.uikit.designe.toolBar.BackIcon
@@ -62,29 +64,42 @@ class ProductScreen(private val id: Int) : Screen {
                             Modifier.background(
                                 AppTheme.colors.mainColor,
                                 shape = RoundedCornerShape(8.dp)
-                            ).size(size)
+                            ).size(size).clickableRound(8.dp) {
+                                viewModel.removeCount()
+                            }
                         ) {
                             Image(
-                                modifier = Modifier.fillMaxSize().align(Alignment.Center).padding(8.dp),
+                                modifier = Modifier.fillMaxSize().align(Alignment.Center)
+                                    .padding(8.dp),
                                 painter = AppResourceImages.minus.painterResource(),
                                 contentDescription = null
                             )
                         }
                         Spacer(Modifier.width(16.dp))
-                        BaseTextFiled(value = "1", modifier = Modifier.weight(1f).onSizeChanged {
-                            with(density) {
-                                size = it.height.toDp()
-                            }
-                        }) {}
+                        BaseTextFiled(
+                            value = state.count,
+                            modifier = Modifier.weight(1f).onSizeChanged {
+                                with(density) {
+                                    size = it.height.toDp()
+                                }
+                            },
+                            type = AppTextFiledType.DIGIT
+                        ) {
+                            val filtered = it.filter { it.isDigit() }
+                            viewModel.changeCount(filtered)
+                        }
                         Spacer(Modifier.width(16.dp))
                         Box(
                             Modifier.background(
                                 AppTheme.colors.mainColor,
                                 shape = RoundedCornerShape(8.dp)
-                            ).size(size)
+                            ).size(size).clickableRound(0.dp) {
+                                viewModel.addCount()
+                            }
                         ) {
                             Image(
-                                modifier = Modifier.fillMaxSize().align(Alignment.Center).padding(8.dp),
+                                modifier = Modifier.fillMaxSize().align(Alignment.Center)
+                                    .padding(8.dp),
                                 painter = AppResourceImages.plus.painterResource(),
                                 contentDescription = null
                             )
@@ -94,7 +109,7 @@ class ProductScreen(private val id: Int) : Screen {
                         text = "Заказать",
                         modifier = Modifier.fillMaxWidth().padding(16.dp)
                     ) {
-
+                        viewModel.createOrder(id)
                     }
                 }
             })

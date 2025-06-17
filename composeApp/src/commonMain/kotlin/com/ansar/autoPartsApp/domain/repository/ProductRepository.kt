@@ -11,6 +11,7 @@ interface ProductRepository {
         title: String,
         brandId: List<Int>,
         categoryId: List<Int>,
+        modelId: List<Int>,
         currentPage: Int, perPage: Int
     ): Either<Failure, List<ProductUI>>
 

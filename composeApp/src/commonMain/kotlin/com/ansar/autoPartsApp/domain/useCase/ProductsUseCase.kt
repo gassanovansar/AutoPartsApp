@@ -13,6 +13,7 @@ internal class ProductsUseCase(private val repository: ProductRepository) :
         val title: String,
         val brandId: List<Int>,
         val categoryId: List<Int>,
+        val modelId: List<Int>,
         val currentPage: Int,
         val perPage: Int,
     )
@@ -25,6 +26,7 @@ internal class ProductsUseCase(private val repository: ProductRepository) :
             title = params.title,
             brandId = params.brandId,
             categoryId = params.categoryId,
+            modelId = params.modelId,
             currentPage = params.currentPage,
             perPage = params.perPage
         )

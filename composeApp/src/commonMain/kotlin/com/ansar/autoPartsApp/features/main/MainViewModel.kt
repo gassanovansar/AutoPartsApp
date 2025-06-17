@@ -1,9 +1,14 @@
 package com.ansar.autoPartsApp.features.main
 
+import cafe.adriel.voyager.core.model.screenModelScope
 import com.ansar.autoPartsApp.base.SelectableDropDownItem
+import com.ansar.autoPartsApp.base.SelectableItem
+import com.ansar.autoPartsApp.base.ext.debounce
 import com.ansar.autoPartsApp.base.utils.BaseScreenModel
+import com.ansar.autoPartsApp.domain.model.ModelUI
 import com.ansar.autoPartsApp.domain.useCase.BrandUseCase
 import com.ansar.autoPartsApp.domain.useCase.CategoryUseCase
+import com.ansar.autoPartsApp.domain.useCase.ModelUseCase
 import com.ansar.autoPartsApp.domain.useCase.ProductsUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.koin.core.component.inject
@@ -15,6 +20,7 @@ class MainViewModel : BaseScreenModel<MainState, MainEvent>(MainState.Default) {
     private val brandUseCase: BrandUseCase by inject()
     private val categoryUseCase: CategoryUseCase by inject()
     private val productsUseCase: ProductsUseCase by inject()
+    private val modelUseCase: ModelUseCase by inject()
 
     var canLoad = MutableStateFlow(false)
 
@@ -22,10 +28,11 @@ class MainViewModel : BaseScreenModel<MainState, MainEvent>(MainState.Default) {
         products()
         brand()
         category()
+        maodel()
     }
 
 
-    private fun products() = intent {
+    fun products() = intent {
         reduce { state.copy(page = 1) }
         launchOperation(operation = { scope ->
             productsUseCase(
@@ -33,6 +40,7 @@ class MainViewModel : BaseScreenModel<MainState, MainEvent>(MainState.Default) {
                     title = state.search,
                     brandId = state.brand.filter { it.isSelected }.map { it.data.id },
                     categoryId = state.category.filter { it.isSelected }.map { it.data.id },
+                    modelId = state.model.filter { it.isSelected }.map { it.data.id },
                     currentPage = 1,
                     perPage = state.limit
                 )
@@ -56,6 +64,7 @@ class MainViewModel : BaseScreenModel<MainState, MainEvent>(MainState.Default) {
                     title = state.search,
                     brandId = state.brand.filter { it.isSelected }.map { it.data.id },
                     categoryId = state.category.filter { it.isSelected }.map { it.data.id },
+                    modelId = state.model.filter { it.isSelected }.map { it.data.id },
                     currentPage = state.page,
                     perPage = state.limit
                 )
@@ -79,6 +88,14 @@ class MainViewModel : BaseScreenModel<MainState, MainEvent>(MainState.Default) {
             categoryUseCase(scope, CategoryUseCase.Params())
         }, success = {
             reduceLocal { state.copy(category = it) }
+        })
+    }
+
+    private fun maodel() = intent {
+        launchOperation(operation = { scope ->
+            modelUseCase(scope, ModelUseCase.Params())
+        }, success = {
+            reduceLocal { state.copy(model = it) }
         })
     }
 
@@ -106,5 +123,23 @@ class MainViewModel : BaseScreenModel<MainState, MainEvent>(MainState.Default) {
             )
         }
 
+    }
+
+    fun changeSearch(value: String) = intent {
+        reduce { state.copy(search = value) }
+        debounceSearch(value)
+    }
+
+    fun changeModel(value: SelectableItem<ModelUI>) = intent {
+        reduce {
+            state.copy(
+                model = state.model.map { it.copy(isSelected = it.data.id == value.data.id) }
+            )
+        }
+        products()
+    }
+
+    private val debounceSearch = debounce<String?>(screenModelScope) {
+        products()
     }
 }
