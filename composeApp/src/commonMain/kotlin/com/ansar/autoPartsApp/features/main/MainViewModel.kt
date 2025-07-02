@@ -5,6 +5,7 @@ import com.ansar.autoPartsApp.base.SelectableDropDownItem
 import com.ansar.autoPartsApp.base.SelectableItem
 import com.ansar.autoPartsApp.base.ext.debounce
 import com.ansar.autoPartsApp.base.utils.BaseScreenModel
+import com.ansar.autoPartsApp.domain.manager.SessionManager
 import com.ansar.autoPartsApp.domain.model.ModelUI
 import com.ansar.autoPartsApp.domain.useCase.BrandUseCase
 import com.ansar.autoPartsApp.domain.useCase.CategoryUseCase
@@ -21,6 +22,7 @@ class MainViewModel : BaseScreenModel<MainState, MainEvent>(MainState.Default) {
     private val categoryUseCase: CategoryUseCase by inject()
     private val productsUseCase: ProductsUseCase by inject()
     private val modelUseCase: ModelUseCase by inject()
+    val sessionManager: SessionManager by inject()
 
     var canLoad = MutableStateFlow(false)
 

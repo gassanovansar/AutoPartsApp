@@ -58,11 +58,14 @@ import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
 import com.ansar.autoPartsApp.base.SelectableItem
 import com.ansar.autoPartsApp.base.ext.clickableRound
 import com.ansar.autoPartsApp.base.ext.ifBlank
 import com.ansar.autoPartsApp.base.ext.top
+import com.ansar.autoPartsApp.base.navigation.RootNavigator
 import com.ansar.autoPartsApp.domain.model.ProductUI
+import com.ansar.autoPartsApp.features.auth.AuthScreen
 import com.ansar.autoPartsApp.features.product.ProductScreen
 import com.ansar.autoPartsApp.uikit.designe.AutoComplete
 import com.ansar.autoPartsApp.uikit.designe.BaseTextFiled
@@ -75,6 +78,8 @@ class MainScreen : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
+        val tabNavigator = LocalTabNavigator.current
+        val rootNavigator = RootNavigator.currentOrThrow
         val viewModel = rememberScreenModel { MainViewModel() }
         val state by viewModel.stateFlow.collectAsState()
         var showLeftDialog by remember { mutableStateOf(false) }
@@ -254,7 +259,12 @@ class MainScreen : Screen {
                     ) {
                         items(state.products) {
                             Item(Modifier.clickableRound(8.dp) {
-                                navigator.push(ProductScreen(it.id))
+                                if (viewModel.sessionManager.isAuth) {
+                                    navigator.push(ProductScreen(it.id))
+                                } else {
+                                    rootNavigator.replaceAll(AuthScreen())
+                                }
+
                             }, it)
                         }
                     }

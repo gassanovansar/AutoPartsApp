@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -13,8 +14,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import cafe.adriel.voyager.navigator.CurrentScreen
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.bottomSheet.BottomSheetNavigator
+import com.ansar.autoPartsApp.base.navigation.RootNavigator
 import com.ansar.autoPartsApp.domain.manager.Notification
 import com.ansar.autoPartsApp.domain.manager.NotificationManager
 import com.ansar.autoPartsApp.features.main.MainScreen
@@ -36,8 +39,13 @@ internal fun App() {
                     topEndPercent = 8
                 )
             ) {
-                Navigator(SplashScreen())
-//                DebugView()
+                Navigator(SplashScreen()) {
+                    CompositionLocalProvider(
+                        RootNavigator provides it,
+                    ) {
+                        CurrentScreen()
+                    }
+                }
             }
             NotificationContainer()
         }

@@ -1,9 +1,12 @@
 package com.ansar.autoPartsApp.features.auth
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -30,6 +33,9 @@ import com.ansar.autoPartsApp.uikit.theme.AppTheme
 import com.ansar.autoPartsApp.uikit.designe.BaseTextFiled
 import com.ansar.autoPartsApp.uikit.designe.AppTextFiledType
 import com.ansar.autoPartsApp.uikit.designe.PrimaryButton
+import com.ansar.autoPartsApp.uikit.designe.toolBar.Toolbar
+import com.ansar.autoparts.images.AppResourceImages
+import io.github.skeptick.libres.compose.painterResource
 import kotlinx.coroutines.launch
 
 
@@ -49,12 +55,32 @@ class AuthScreen : Screen {
         PageContainer(
             isLoading = viewModel.status.collectAsState(false),
             error = viewModel.error.collectAsState(initial = null),
+            header = {
+                Toolbar(rightIcon = {
+                    Text(
+                        text = "Пропустить",
+                        style = AppTheme.typography.bold.copy(
+                            fontSize = 16.sp,
+                            color = AppTheme.colors.text
+                        ),
+                        modifier = Modifier.clickable {
+                            navigator.replaceAll(TabScreen())
+                        },
+                        textAlign = TextAlign.Center
+                    )
+                })
+            },
             content = {
                 Column(Modifier.align(alignment = Alignment.Center)) {
                     Box(
                         Modifier.size(32.dp).align(Alignment.CenterHorizontally)
-                            .background(AppTheme.colors.mainColor)
-                    )
+                    ) {
+                        Image(
+                            painter = AppResourceImages.newicon.painterResource(),
+                            contentDescription = null,
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    }
                     Text(
                         text = "Войдите в свой аккаунт",
                         style = AppTheme.typography.bold.copy(

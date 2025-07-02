@@ -26,13 +26,17 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabNavigator
+import com.ansar.autoPartsApp.base.navigation.RootNavigator
+import com.ansar.autoPartsApp.features.auth.AuthScreen
 import com.ansar.autoPartsApp.uikit.screens.PageContainer
 import com.ansar.autoPartsApp.uikit.theme.AppTheme
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -50,7 +54,6 @@ class TabScreen(private val tab: Tab = MainTabScreen) : Screen, KoinComponent {
 
     @Composable
     override fun Content() {
-//        val screenModel = rememberScreenModel { TabScreenModel() }
         TabNavigator(
             tab = tab,
             disposeNestedNavigators = true
@@ -82,7 +85,9 @@ class TabScreen(private val tab: Tab = MainTabScreen) : Screen, KoinComponent {
                                     .background(AppTheme.colors.mainColor)
                             ) {
                                 TabNavItem(MainTabScreen)
-                                TabNavItem(HistoryTabScreen)
+                                TabNavItem(HistoryTabScreen) {
+                                    it.replaceAll(AuthScreen())
+                                }
 //                            TabNavItem(ProfileTabScreen)
 //                            val role by screenModel.sessionManager.role.collectAsState()
 //                            when (role) {
@@ -113,9 +118,11 @@ class TabScreen(private val tab: Tab = MainTabScreen) : Screen, KoinComponent {
     }
 
     @Composable
-    private fun RowScope.TabNavItem(tab: Tab) {
+    private fun RowScope.TabNavItem(tab: Tab, onClick: ((Navigator) -> Unit)? = null) {
+        val screenModel = rememberScreenModel { TabScreenModel() }
         val tabNavigator = LocalTabNavigator.current
         val navigator = LocalNavigator.currentOrThrow
+        val rootNavigator = RootNavigator.currentOrThrow
         val selected = tabNavigator.current == tab
         val color = if (selected) AppTheme.colors.white else AppTheme.colors.mainColor
         val background = if (selected) AppTheme.colors.mainColor else AppTheme.colors.white
@@ -124,7 +131,11 @@ class TabScreen(private val tab: Tab = MainTabScreen) : Screen, KoinComponent {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.clickable {
-                tabNavigator.current = tab
+                if (onClick == null || screenModel.sessionManager.isAuth) {
+                    tabNavigator.current = tab
+                } else {
+                    onClick.invoke(rootNavigator)
+                }
             }.background(background).padding(vertical = 8.dp)
                 .weight(1f)
         ) {
