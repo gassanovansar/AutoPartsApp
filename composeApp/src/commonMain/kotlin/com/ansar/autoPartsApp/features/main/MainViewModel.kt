@@ -144,4 +144,12 @@ class MainViewModel : BaseScreenModel<MainState, MainEvent>(MainState.Default) {
     private val debounceSearch = debounce<String?>(screenModelScope) {
         products()
     }
+
+    fun onClickBrand(it: Boolean) = intent {
+        reduce { state.copy(brandSelected = it) }
+    }
+
+    fun onClickCatalog(it: Boolean) = intent {
+        reduce { state.copy(catalogSelected = it) }
+    }
 }

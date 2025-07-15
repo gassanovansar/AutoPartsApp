@@ -12,8 +12,11 @@ data class MainState(
     val model: List<SelectableItem<ModelUI>>,
     val products: List<ProductUI>,
     val page: Int,
-    val limit: Int
-) {
+    val limit: Int,
+    val catalogSelected: Boolean,
+    val brandSelected: Boolean,
+
+    ) {
     companion object {
         val Default = MainState(
             search = "",
@@ -22,7 +25,9 @@ data class MainState(
             model = emptyList(),
             products = emptyList(),
             page = 1,
-            limit = 20
+            limit = 20,
+            catalogSelected = false,
+            brandSelected = false
         )
     }
 }

@@ -88,6 +88,9 @@ class TabScreen(private val tab: Tab = MainTabScreen) : Screen, KoinComponent {
                                 TabNavItem(HistoryTabScreen) {
                                     it.replaceAll(AuthScreen())
                                 }
+                                TabNavItem(ProfileTabScreen) {
+                                    it.replaceAll(AuthScreen())
+                                }
 //                            TabNavItem(ProfileTabScreen)
 //                            val role by screenModel.sessionManager.role.collectAsState()
 //                            when (role) {

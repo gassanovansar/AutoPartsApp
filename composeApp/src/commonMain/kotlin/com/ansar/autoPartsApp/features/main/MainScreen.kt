@@ -361,21 +361,31 @@ class MainScreen : Screen {
                             item {
                                 AutoComplete(
                                     modifier = Modifier.top(32.dp),
+                                    expanded = state.catalogSelected,
                                     title = "Каталог",
                                     hint = "Каталог",
                                     list = state.category,
                                     paddingStart = 16.dp,
-                                    paddingEnd = 16.dp
+                                    paddingEnd = 16.dp,
+                                    onClick = {
+                                        viewModel.onClickCatalog(it)
+                                        viewModel.onClickBrand(false)
+                                    }
                                 ) {
                                     viewModel.selectCategory(it)
                                 }
                                 AutoComplete(
                                     modifier = Modifier.top(12.dp),
+                                    expanded = state.brandSelected,
                                     title = "Отбор по бренду",
                                     hint = "Бренды",
                                     list = state.brand,
                                     paddingStart = 16.dp,
-                                    paddingEnd = 16.dp
+                                    paddingEnd = 16.dp,
+                                    onClick = {
+                                        viewModel.onClickBrand(it)
+                                        viewModel.onClickCatalog(false)
+                                    }
                                 ) {
                                     viewModel.selectBrand(it)
                                 }

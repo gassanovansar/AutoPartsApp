@@ -5,7 +5,6 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,12 +19,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.CheckboxColors
 import androidx.compose.material3.Checkbox
-import androidx.compose.material.Chip
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.material3.CheckboxDefaults
@@ -46,7 +42,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ansar.autoPartsApp.base.SelectableDropDownItem
-import com.ansar.autoPartsApp.base.ext.bottom
 import com.ansar.autoPartsApp.base.ext.clickableRound
 import com.ansar.autoPartsApp.uikit.theme.AppTheme
 import com.ansar.autoparts.images.AppResourceImages
@@ -60,6 +55,7 @@ interface DropDown {
 @Composable
 internal fun AutoComplete(
     modifier: Modifier = Modifier,
+    expanded: Boolean = false,
     list: List<SelectableDropDownItem>,
     paddingStart: Dp = 0.dp,
     paddingEnd: Dp = 0.dp,
@@ -69,6 +65,7 @@ internal fun AutoComplete(
     errorText: String? = null,
     mini: Boolean = false,
     addWidthDp: Dp = 0.dp,
+    onClick: (Boolean) -> Unit = {},
     typeOnClick: (SelectableDropDownItem) -> Unit = {},
 ) {
     var width by remember { mutableStateOf(0.dp) }
@@ -76,7 +73,7 @@ internal fun AutoComplete(
     var allList by remember { mutableStateOf(true) }
     val density = LocalDensity.current
 
-    var expanded by remember { mutableStateOf(false) }
+    var _expanded by remember(expanded) { mutableStateOf(expanded) }
     Box(modifier) {
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(4.dp),
@@ -101,7 +98,8 @@ internal fun AutoComplete(
                         )
                     )
                     Image(
-                        modifier = Modifier.size(18.dp).align(Alignment.CenterVertically).padding(end = 2.dp),
+                        modifier = Modifier.size(18.dp).align(Alignment.CenterVertically)
+                            .padding(end = 2.dp),
                         painter = painterResource(AppResourceImages.close),
                         contentDescription = null
                     )
@@ -129,27 +127,29 @@ internal fun AutoComplete(
                     shape = RoundedCornerShape(8.dp),
                     right = {
                         androidx.compose.material3.IconButton(onClick = {
-                            expanded = !expanded
-                            if (!expanded) keyboardController?.hide()
+                            _expanded = !_expanded
+                            onClick(_expanded)
+                            if (!_expanded) keyboardController?.hide()
                         }) {
                             androidx.compose.material3.Icon(
                                 modifier = Modifier,
-                                painter = if (expanded) AppResourceImages.arrowupcolor2.painterResource() else AppResourceImages.arrowdowncolor2.painterResource(),
+                                painter = if (_expanded) AppResourceImages.arrowupcolor2.painterResource() else AppResourceImages.arrowdowncolor2.painterResource(),
                                 contentDescription = null,
                                 tint = Color.Black
                             )
                         }
                     },
                     isFocused = {
-                            expanded = it
+                        _expanded = it
                     }
                 ) {
                     search = it
                     allList = false
-                    expanded = true
+                    _expanded = true
+                    onClick(_expanded)
                 }
 
-                AnimatedVisibility(visible = expanded) {
+                AnimatedVisibility(visible = _expanded) {
                     AppCard(
                         modifier = Modifier.width(200.dp).padding(horizontal = 8.dp),
                         shape = RoundedCornerShape(bottomEnd = 10.dp, bottomStart = 10.dp),
