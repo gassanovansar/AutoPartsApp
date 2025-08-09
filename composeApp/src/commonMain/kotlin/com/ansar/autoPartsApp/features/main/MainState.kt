@@ -15,8 +15,9 @@ data class MainState(
     val limit: Int,
     val catalogSelected: Boolean,
     val brandSelected: Boolean,
+    val emptyText: Boolean
 
-    ) {
+) {
     companion object {
         val Default = MainState(
             search = "",
@@ -27,7 +28,8 @@ data class MainState(
             page = 1,
             limit = 20,
             catalogSelected = false,
-            brandSelected = false
+            brandSelected = false,
+            emptyText = false
         )
     }
 }

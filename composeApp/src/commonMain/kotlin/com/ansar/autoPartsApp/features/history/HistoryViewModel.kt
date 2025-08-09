@@ -31,7 +31,8 @@ class HistoryViewModel : BaseScreenModel<HistoryState, Any>(HistoryState.Default
             canLoad.value = it.isNotEmpty()
             reduceLocal {
                 state.copy(
-                    orders = it
+                    orders = it,
+                    emptyText = it.isEmpty()
                 )
             }
         })

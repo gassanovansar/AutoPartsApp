@@ -51,7 +51,8 @@ class MainViewModel : BaseScreenModel<MainState, MainEvent>(MainState.Default) {
             canLoad.value = it.isNotEmpty()
             reduceLocal {
                 state.copy(
-                    products = it
+                    products = it,
+                    emptyText = it.isEmpty()
                 )
             }
         })
@@ -97,7 +98,17 @@ class MainViewModel : BaseScreenModel<MainState, MainEvent>(MainState.Default) {
         launchOperation(operation = { scope ->
             modelUseCase(scope, ModelUseCase.Params())
         }, success = {
-            reduceLocal { state.copy(model = it) }
+            reduceLocal {
+                state.copy(
+                    model = listOf(
+                        SelectableItem(
+                            ModelUI(0, "Все"),
+                            isSelected = true
+                        )
+                    ) + it
+                )
+
+            }
         })
     }
 

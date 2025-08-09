@@ -34,7 +34,7 @@ class FilterRepositoryImpl(private val api: FilterApi) : FilterRepository {
             data.data?.map {
                 SelectableItem(
                     ModelUI(it.id ?: 0, it.title.orEmpty()),
-                    it.id == data.data.first().id
+                    false
                 )
             }.orEmpty()
         })

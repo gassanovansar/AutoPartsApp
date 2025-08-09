@@ -104,6 +104,18 @@ class HistoryScreen : Screen {
 
                 },
                 content = {
+                    Box(Modifier.fillMaxSize()) {
+                        Text(
+                            modifier = Modifier.align(Alignment.Center)
+                                .padding(horizontal = 16.dp),
+                            text = if (state.emptyText) "Список заказов пуст." else "",
+                            style = AppTheme.typography.bold.copy(
+                                fontSize = 24.sp,
+                                color = AppTheme.colors.text,
+                                textAlign = TextAlign.Center
+                            )
+                        )
+                    }
                     LazyColumn(
                         state = lazyListState,
                         contentPadding = PaddingValues(16.dp),
@@ -115,6 +127,7 @@ class HistoryScreen : Screen {
                             }, it)
                         }
                     }
+
                 })
         }
 

@@ -26,7 +26,7 @@ internal class ProductsUseCase(private val repository: ProductRepository) :
             title = params.title,
             brandId = params.brandId,
             categoryId = params.categoryId,
-            modelId = params.modelId,
+            modelId = params.modelId.filter { it != 0 },
             currentPage = params.currentPage,
             perPage = params.perPage
         )
