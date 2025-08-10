@@ -10,15 +10,21 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material3.Checkbox
@@ -39,13 +45,17 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ansar.autoPartsApp.base.SelectableDropDownItem
 import com.ansar.autoPartsApp.base.ext.clickableRound
+import com.ansar.autoPartsApp.base.ext.vertical
 import com.ansar.autoPartsApp.uikit.theme.AppTheme
 import com.ansar.autoparts.images.AppResourceImages
 import io.github.skeptick.libres.compose.painterResource
+import kotlin.math.max
+import kotlin.math.roundToInt
 
 interface DropDown {
     val id: Int
@@ -112,42 +122,45 @@ internal fun AutoComplete(
             backgroundColor = AppTheme.colors.mainColor,
             modifier = Modifier.padding(top = 32.dp).padding(start = paddingStart, end = paddingEnd)
         ) {
-            Column(modifier = Modifier.background(AppTheme.colors.mainColor).onSizeChanged {
+            Column(modifier = Modifier.background(Color.Transparent).onSizeChanged {
                 with(density) {
                     width = it.width.toDp() + addWidthDp
                 }
             })
             {
                 val keyboardController = LocalSoftwareKeyboardController.current
-                BaseTextFiled(
-                    modifier = Modifier.width(200.dp),
-                    value = search,
-                    hint = hint,
-                    mini = true,
-                    shape = RoundedCornerShape(8.dp),
-                    right = {
-                        androidx.compose.material3.IconButton(onClick = {
-                            _expanded = !_expanded
-                            onClick(_expanded)
-                            if (!_expanded) keyboardController?.hide()
-                        }) {
-                            androidx.compose.material3.Icon(
-                                modifier = Modifier,
-                                painter = if (_expanded) AppResourceImages.arrowupcolor2.painterResource() else AppResourceImages.arrowdowncolor2.painterResource(),
-                                contentDescription = null,
-                                tint = Color.Black
-                            )
+                AppCard(shape =  RoundedCornerShape(8.dp)) {
+                    BaseTextFiled(
+                        modifier = Modifier.width(200.dp),
+                        value = search,
+                        hint = hint,
+                        mini = true,
+                        shape = RoundedCornerShape(8.dp),
+                        right = {
+                            androidx.compose.material3.IconButton(onClick = {
+                                _expanded = !_expanded
+                                onClick(_expanded)
+                                if (!_expanded) keyboardController?.hide()
+                            }) {
+                                androidx.compose.material3.Icon(
+                                    modifier = Modifier,
+                                    painter = if (_expanded) AppResourceImages.arrowupcolor2.painterResource() else AppResourceImages.arrowdowncolor2.painterResource(),
+                                    contentDescription = null,
+                                    tint = Color.Black
+                                )
+                            }
+                        },
+                        isFocused = {
+                            _expanded = it
                         }
-                    },
-                    isFocused = {
-                        _expanded = it
+                    ) {
+                        search = it
+                        allList = false
+                        _expanded = true
+                        onClick(_expanded)
                     }
-                ) {
-                    search = it
-                    allList = false
-                    _expanded = true
-                    onClick(_expanded)
                 }
+
 
                 AnimatedVisibility(visible = _expanded) {
                     AppCard(
@@ -168,21 +181,11 @@ internal fun AutoComplete(
                                 overflow = TextOverflow.Ellipsis
                             )
                         } else {
-                            LazyColumn(
-                                modifier = Modifier.heightIn(max = 150.dp),
+                            LazyColumnWithScrollbar(
+                                modifier = Modifier.heightIn(max = 240.dp)
                             ) {
-                                itemsIndexed(if (allList) {
-                                    list
-                                } else {
-                                    list.filter {
-                                        it.data.title.contains(
-                                            search,
-                                            ignoreCase = true
-                                        )
-                                    }
-                                }) { index, it ->
-                                    val theme =
-                                        if (it.isSelected) AppTheme.typography.semiBold else AppTheme.typography.regular
+                                itemsIndexed(if (allList) list else list.filter { it.data.title.contains(search, ignoreCase = true) }) { index, it ->
+                                    val theme = if (it.isSelected) AppTheme.typography.semiBold else AppTheme.typography.regular
                                     Row(Modifier.clickable {
                                         allList = true
                                         keyboardController?.hide()
@@ -198,9 +201,7 @@ internal fun AutoComplete(
                                             colors = CheckboxDefaults.colors(checkedColor = AppTheme.colors.mainColor)
                                         )
                                         Text(
-                                            style = theme.copy(
-                                                fontSize = if (mini) 12.sp else 18.sp,
-                                            ),
+                                            style = theme.copy(fontSize = if (mini) 12.sp else 18.sp),
                                             text = it.data.title,
                                             modifier = Modifier.fillMaxWidth()
                                                 .align(Alignment.CenterVertically),
@@ -238,3 +239,82 @@ internal fun AutoComplete(
     }
 
 }
+@Composable
+fun LazyColumnWithScrollbar(
+    modifier: Modifier = Modifier,
+    listState: LazyListState = rememberLazyListState(),
+    minThumbHeight: Dp = 20.dp,
+    thumbWidth: Dp = 4.dp,
+    trackWidth: Dp = 2.dp,
+    thumbColor: Color = Color.DarkGray,
+    trackColor: Color = Color.LightGray.copy(alpha = 0.5f),
+    verticalPadding: Dp = 8.dp,
+    content: LazyListScope.() -> Unit
+) {
+    val density = LocalDensity.current
+
+    Box(modifier = modifier) {
+        LazyColumn(
+            state = listState,
+            modifier = Modifier.fillMaxWidth().padding(end = 8.dp)
+        ) {
+            content()
+        }
+
+        val layoutInfo = listState.layoutInfo
+        val visibleItems = layoutInfo.visibleItemsInfo
+        val totalItems = layoutInfo.totalItemsCount
+        val viewportPx = (layoutInfo.viewportEndOffset - layoutInfo.viewportStartOffset).toFloat()
+
+        if (totalItems > 0 && viewportPx > 0f && visibleItems.isNotEmpty()) {
+            val averageItemHeightPx = visibleItems.sumOf { it.size }.toFloat() / visibleItems.size
+            val contentHeightPx = averageItemHeightPx * totalItems
+            val scrollRangePx = (contentHeightPx - viewportPx).coerceAtLeast(0f)
+            val scrollOffsetPx = listState.firstVisibleItemIndex * averageItemHeightPx +
+                    listState.firstVisibleItemScrollOffset.toFloat()
+
+            val minThumbPx = with(density) { minThumbHeight.toPx() }
+            val thumbHeightPx = max(minThumbPx, (viewportPx * (viewportPx / contentHeightPx)))
+
+            val paddingPx = with(density) { verticalPadding.toPx() }
+            val availableScrollAreaPx = viewportPx - paddingPx * 2 - thumbHeightPx
+
+            val thumbOffsetPx = if (scrollRangePx <= 0f) {
+                paddingPx
+            } else {
+                paddingPx + (scrollOffsetPx / scrollRangePx) * availableScrollAreaPx
+            }
+
+            Box(
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .fillMaxHeight()
+                    .padding(end = 4.dp)
+            ) {
+                // Дорожка
+                Box(
+                    modifier = Modifier.padding(vertical = 8.dp)
+                        .fillMaxHeight()
+                        .width(trackWidth)
+                        .background(trackColor, shape = RoundedCornerShape(trackWidth / 2))
+                        .align(Alignment.Center)
+                )
+
+                // Ползунок
+                Box(
+                    modifier = Modifier
+                        .offset { IntOffset(x = 0, y = thumbOffsetPx.roundToInt()) }
+                        .width(thumbWidth)
+                        .height(with(density) { thumbHeightPx.toDp() })
+                        .background(thumbColor, shape = RoundedCornerShape(thumbWidth / 2))
+                        .align(Alignment.TopCenter)
+                )
+            }
+        }
+    }
+}
+
+
+
+
+
