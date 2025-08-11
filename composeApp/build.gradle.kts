@@ -1,5 +1,8 @@
+import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
+
 plugins {
     alias(libs.plugins.multiplatform)
+//    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.compose)
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlinx.serialization)
@@ -145,11 +148,11 @@ dependencies {
 
 android {
     namespace = "com.ansar.autoparts"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 35
 
         applicationId = "ccom.ansar.autoparts"
         versionCode = 1

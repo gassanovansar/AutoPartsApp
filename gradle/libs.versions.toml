@@ -2,7 +2,7 @@
 
 kotlin = "1.9.21"
 compose = "1.5.11"
-agp = "8.1.2"
+agp = "8.10.1"
 androidx-activityCompose = "1.8.1"
 voyager = "1.0.0"
 koin = "3.5.3"
@@ -15,7 +15,7 @@ kotlinx-serialization = "1.6.2"
 multiplatformSettings = "1.1.1"
 okhttp = "4.11.0"
 chucker = "4.0.0"
-libres = "1.2.1"
+libres = "1.2.4"
 orbit-core = "6.0.0"
 coil = "2.4.0"
 coil3 = "3.0.0-alpha06"
@@ -84,6 +84,7 @@ multiplatformSettings = { module = "com.russhwolf:multiplatform-settings-no-arg"
 [plugins]
 
 multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 compose = { id = "org.jetbrains.compose", version.ref = "compose" }
 android-application = { id = "com.android.application", version.ref = "agp" }
 cocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
