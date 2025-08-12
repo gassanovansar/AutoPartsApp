@@ -492,12 +492,12 @@ fun Item(modifier: Modifier, item: ProductUI) {
     ) {
         Column {
             Table(title = "Код", description = item.id.toString().ifBlank { "-" })
-            Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)
-            Table(title = "Артикул", description = item.article.ifBlank { "-" })
+//            Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)
+//            Table(title = "Артикул", description = item.article.ifBlank { "-" })
             Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)
             Table(title = "OEM", description = item.oem.ifBlank { "-" })
             Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)
-            Table(title = "Наименование", description = item.description.ifBlank { "-" })
+            Table(title = "Наименование", description = item.title.ifBlank { "-" })
             Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)
             Table(title = "Бренд", description = item.brand.title.ifBlank { "-" })
             Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)

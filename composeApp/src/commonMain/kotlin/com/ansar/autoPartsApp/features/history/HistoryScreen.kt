@@ -146,14 +146,14 @@ fun Item(modifier: Modifier, item: OrderUI) {
     ) {
         Column {
             Table(title = "Код", description = item.product.id.toString().ifBlank { "-" })
-            Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)
-            Table(title = "Артикул", description = item.product.article.ifBlank { "-" })
+//            Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)
+//            Table(title = "Артикул", description = item.product.article.ifBlank { "-" })
             Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)
             Table(title = "OEM", description = item.product.oem.ifBlank { "-" })
             Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)
             Table(
                 title = "Наименование",
-                description = item.product.description.ifBlank { "-" }
+                description = item.product.title.ifBlank { "-" }
             )
             Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)
             Table(title = "Бренд", description = item.product.brand.title.ifBlank { "-" })
