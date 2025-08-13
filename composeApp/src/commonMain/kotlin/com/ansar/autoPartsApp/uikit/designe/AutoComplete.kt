@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -42,6 +43,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
@@ -49,8 +51,11 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ansar.autoPartsApp.base.SelectableDropDownItem
+import com.ansar.autoPartsApp.base.ext.CustomText
 import com.ansar.autoPartsApp.base.ext.clickableRound
 import com.ansar.autoPartsApp.base.ext.vertical
+import com.ansar.autoPartsApp.platform.Platform
+import com.ansar.autoPartsApp.platform.PlatformType
 import com.ansar.autoPartsApp.uikit.theme.AppTheme
 import com.ansar.autoparts.images.AppResourceImages
 import io.github.skeptick.libres.compose.painterResource
@@ -61,7 +66,13 @@ interface DropDown {
     val id: Int
     val title: String
 }
-
+fun Modifier.fixTextOffsetForIOS(offsetDp: Dp = (-1).dp): Modifier {
+    return if (Platform.type == PlatformType.IOS) {
+        this.offset(y = offsetDp)
+    } else {
+        this
+    }
+}
 @Composable
 internal fun AutoComplete(
     modifier: Modifier = Modifier,
@@ -91,25 +102,28 @@ internal fun AutoComplete(
         ) {
             items(list.filter { it.isSelected }) {
                 Row(
-                    Modifier.background(
-                        AppTheme.colors.white,
-                        shape = RoundedCornerShape(16.dp)
-                    ).clickableRound(16.dp) {
-                        typeOnClick(it)
-                    },
+                    modifier = Modifier
+                        .background(AppTheme.colors.white, shape = RoundedCornerShape(16.dp))
+                        .clickableRound(16.dp) { typeOnClick(it) }
+                        .padding(horizontal = 4.dp, vertical = 2.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
-                        modifier = Modifier.padding(horizontal = 2.dp),
+                    CustomText(
+                        modifier = Modifier.align(Alignment.CenterVertically),
                         text = it.data.title,
                         style = AppTheme.typography.semiBold.copy(
                             fontSize = 12.sp,
                             color = AppTheme.colors.text,
                             textAlign = TextAlign.Center,
-                        )
+                        ),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
+
+                    Spacer(modifier = Modifier.width(4.dp))
+
                     Image(
-                        modifier = Modifier.size(18.dp).align(Alignment.CenterVertically)
-                            .padding(end = 2.dp),
+                        modifier = Modifier.size(18.dp),
                         painter = painterResource(AppResourceImages.close),
                         contentDescription = null
                     )
@@ -129,7 +143,7 @@ internal fun AutoComplete(
             })
             {
                 val keyboardController = LocalSoftwareKeyboardController.current
-                AppCard(shape =  RoundedCornerShape(8.dp)) {
+                AppCard(shape = RoundedCornerShape(8.dp)) {
                     BaseTextFiled(
                         modifier = Modifier.width(200.dp),
                         value = search,
@@ -170,7 +184,7 @@ internal fun AutoComplete(
                         elevation = 1.dp
                     ) {
                         if (list.isEmpty()) {
-                            Text(
+                            CustomText(
                                 style = AppTheme.typography.regular.copy(
                                     fontSize = if (mini) 12.sp else 18.sp,
                                 ),
@@ -184,8 +198,14 @@ internal fun AutoComplete(
                             LazyColumnWithScrollbar(
                                 modifier = Modifier.heightIn(max = 240.dp)
                             ) {
-                                itemsIndexed(if (allList) list else list.filter { it.data.title.contains(search, ignoreCase = true) }) { index, it ->
-                                    val theme = if (it.isSelected) AppTheme.typography.semiBold else AppTheme.typography.regular
+                                itemsIndexed(if (allList) list else list.filter {
+                                    it.data.title.contains(
+                                        search,
+                                        ignoreCase = true
+                                    )
+                                }) { index, it ->
+                                    val theme =
+                                        if (it.isSelected) AppTheme.typography.semiBold else AppTheme.typography.regular
                                     Row(Modifier.clickable {
                                         allList = true
                                         keyboardController?.hide()
@@ -200,7 +220,7 @@ internal fun AutoComplete(
                                             },
                                             colors = CheckboxDefaults.colors(checkedColor = AppTheme.colors.mainColor)
                                         )
-                                        Text(
+                                        CustomText(
                                             style = theme.copy(fontSize = if (mini) 12.sp else 18.sp),
                                             text = it.data.title,
                                             modifier = Modifier.fillMaxWidth()
@@ -226,7 +246,7 @@ internal fun AutoComplete(
         }
 
         AnimatedVisibility(error && errorText != null) {
-            Text(
+            CustomText(
                 modifier = Modifier.padding(top = 5.dp),
                 text = errorText.toString(),
                 style = AppTheme.typography.regular.copy(
@@ -239,6 +259,7 @@ internal fun AutoComplete(
     }
 
 }
+
 @Composable
 fun LazyColumnWithScrollbar(
     modifier: Modifier = Modifier,

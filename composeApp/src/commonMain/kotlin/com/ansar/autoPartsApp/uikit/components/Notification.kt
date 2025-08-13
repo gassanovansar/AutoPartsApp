@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ansar.autoPartsApp.base.ext.CustomText
 import com.ansar.autoPartsApp.domain.manager.Notification
 import com.ansar.autoPartsApp.uikit.theme.AppTheme
 import kotlinx.coroutines.delay
@@ -77,7 +78,7 @@ fun NotificationCenter(notification: Notification?) {
                     modifier = Modifier.padding(start = 16.dp),
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    Text(
+                    CustomText(
                         text = notification?.header ?: "",
                         style = AppTheme.typography.bold.copy(
                             fontSize = 18.sp,
@@ -85,7 +86,7 @@ fun NotificationCenter(notification: Notification?) {
 //                            color = AppTheme.colors.greyBlack,
                         )
                     )
-                    Text(
+                    CustomText(
                         text = notification?.message ?: "",
                         style = AppTheme.typography.regular.copy(
                             fontSize = 14.sp,

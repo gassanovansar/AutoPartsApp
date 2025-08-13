@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ansar.autoPartsApp.base.ext.CustomText
 import com.ansar.autoPartsApp.base.ext.start
 import com.ansar.autoPartsApp.uikit.theme.AppTheme
 
@@ -36,7 +37,7 @@ fun Toolbar(
             leftIcon()
         }
         if (startTitle != null) {
-            Text(
+            CustomText(
                 modifier = Modifier.align(Alignment.CenterStart).start(29.dp),
                 text = startTitle,
                 style = AppTheme.typography.regular.copy(
@@ -47,7 +48,7 @@ fun Toolbar(
         } else {
             Box(modifier = Modifier.align(Alignment.Center)) {
                 if (title != null) {
-                    Text(
+                    CustomText(
                         text = title,
                         modifier = Modifier.padding(horizontal = 8.dp),
                         color = AppTheme.colors.text,

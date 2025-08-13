@@ -6,8 +6,11 @@ import androidx.compose.ui.text.PlatformParagraphStyle
 import androidx.compose.ui.text.PlatformSpanStyle
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.text.style.LineHeightStyle
+import com.ansar.autoPartsApp.platform.Platform
+import com.ansar.autoPartsApp.platform.PlatformType
 import com.ansar.autoPartsApp.uikit.theme.typography.BaseTypography
 
 expect object AppFonts {
@@ -50,10 +53,12 @@ private fun toTextStyle(typographyStyle: BaseTypography): TextStyle {
             PlatformParagraphStyle.Default
         ),
         baselineShift = BaselineShift(typographyStyle.baselineShift),
-        lineHeightStyle = LineHeightStyle(
-            LineHeightStyle.Alignment.Center,
-            LineHeightStyle.Trim.None
-        )
+        lineHeightStyle = if (Platform.type == PlatformType.ANDROID) {
+            LineHeightStyle(
+                LineHeightStyle.Alignment.Center,
+                LineHeightStyle.Trim.None
+            )
+        } else null
     )
 }
 

@@ -26,6 +26,7 @@ import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import com.ansar.autoPartsApp.base.ext.CustomText
 import com.ansar.autoPartsApp.features.main.MainScreen
 import com.ansar.autoPartsApp.features.tab.TabScreen
 import com.ansar.autoPartsApp.uikit.screens.PageContainer
@@ -57,7 +58,7 @@ class AuthScreen : Screen {
             error = viewModel.error.collectAsState(initial = null),
             header = {
                 Toolbar(rightIcon = {
-                    Text(
+                    CustomText(
                         text = "Пропустить",
                         style = AppTheme.typography.bold.copy(
                             fontSize = 16.sp,
@@ -81,7 +82,7 @@ class AuthScreen : Screen {
                             modifier = Modifier.fillMaxSize()
                         )
                     }
-                    Text(
+                    CustomText(
                         text = "Войдите в свой аккаунт",
                         style = AppTheme.typography.bold.copy(
                             fontSize = 16.sp,

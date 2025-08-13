@@ -59,6 +59,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.ansar.autoPartsApp.base.SelectableItem
+import com.ansar.autoPartsApp.base.ext.CustomText
 import com.ansar.autoPartsApp.base.ext.clickableRound
 import com.ansar.autoPartsApp.base.ext.ifBlank
 import com.ansar.autoPartsApp.base.ext.top
@@ -105,7 +106,7 @@ class HistoryScreen : Screen {
                 },
                 content = {
                     Box(Modifier.fillMaxSize()) {
-                        Text(
+                        CustomText(
                             modifier = Modifier.align(Alignment.Center)
                                 .padding(horizontal = 16.dp),
                             text = if (state.emptyText) "Список заказов пуст." else "",
@@ -138,14 +139,14 @@ class HistoryScreen : Screen {
 fun Item(modifier: Modifier, item: OrderUI) {
     Card(
         modifier = modifier,
-        shape = RoundedCornerShape(4.dp),
+        shape = RoundedCornerShape(0.dp),
         border = BorderStroke(
             width = 2.dp,
             color = AppTheme.colors.border
         )
     ) {
         Column {
-            Table(title = "Код", description = item.product.id.toString().ifBlank { "-" })
+//            Table(title = "Код", description = item.product.id.toString().ifBlank { "-" })
 //            Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)
 //            Table(title = "Артикул", description = item.product.article.ifBlank { "-" })
             Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)
@@ -175,36 +176,32 @@ private fun Table(title: String, description: String) {
     Row(modifier = Modifier) {
 //            Divider(Modifier.width(1.dp).height(size), color = AppTheme.colors.border)
         Box(
-            modifier = Modifier.weight(0.2f).onSizeChanged {
-                with(density) {
-                    size = it.height.toDp()
-                }
-            }
+            modifier = Modifier.weight(0.2f)
         ) {
-            Text(
-                modifier = Modifier.padding(horizontal = 4.dp),
+            CustomText(
+                modifier = Modifier.padding(horizontal = 4.dp).align(Alignment.CenterStart),
                 text = title,
                 style = AppTheme.typography.bold.copy(
                     fontSize = 12.sp,
                     color = AppTheme.colors.text,
                 ),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
             )
         }
         Divider(Modifier.width(1.dp).height(size), color = AppTheme.colors.border)
         Box(
-            modifier = Modifier.weight(0.3f)
+            modifier = Modifier.weight(0.3f).onSizeChanged {
+                with(density) {
+                    size = it.height.toDp()
+                }
+            }
         ) {
-            Text(
-                modifier = Modifier.padding(horizontal = 4.dp),
+            CustomText(
+                modifier = Modifier.padding(horizontal = 4.dp).align(Alignment.CenterStart),
                 text = description,
                 style = AppTheme.typography.medium.copy(
                     fontSize = 12.sp,
                     color = AppTheme.colors.text,
                 ),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
             )
         }
 //            Divider(Modifier.width(1.dp).height(size), color = AppTheme.colors.border)

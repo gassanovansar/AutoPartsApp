@@ -29,8 +29,10 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ansar.autoPartsApp.base.ext.CustomText
 import com.ansar.autoPartsApp.base.ext.clickableRound
 import com.ansar.autoPartsApp.uikit.theme.AppTheme
 import com.ansar.autoparts.AppResource
@@ -95,12 +97,17 @@ fun BaseTextFiled(
                 textStyle = AppTheme.typography.medium.copy(
                     fontSize = 16.sp,
                     color = AppTheme.colors.text,
+                    lineHeightStyle = LineHeightStyle(
+                        alignment = LineHeightStyle.Alignment.Center,
+                        trim = LineHeightStyle.Trim.None,
+                    )
                 ),
                 singleLine = true,
                 maxLines = 1,
                 decorationBox = { innerTextField ->
                     if (_value.isEmpty() && hint.isNotEmpty()) {
-                        androidx.compose.material.Text(
+                        CustomText(
+                            modifier = Modifier.align(Alignment.CenterVertically),
                             text = hint,
                             style = AppTheme.typography.medium.copy(
                                 fontSize = 16.sp,

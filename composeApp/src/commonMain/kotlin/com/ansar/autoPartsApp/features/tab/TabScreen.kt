@@ -35,6 +35,7 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabNavigator
+import com.ansar.autoPartsApp.base.ext.CustomText
 import com.ansar.autoPartsApp.base.navigation.RootNavigator
 import com.ansar.autoPartsApp.features.auth.AuthScreen
 import com.ansar.autoPartsApp.uikit.screens.PageContainer
@@ -154,7 +155,7 @@ class TabScreen(private val tab: Tab = MainTabScreen) : Screen, KoinComponent {
                     )
                 }
             }
-            Text(
+            CustomText(
                 text = tab.options.title,
                 modifier = Modifier,
                 color = color,

@@ -50,6 +50,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -60,6 +61,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
 import com.ansar.autoPartsApp.base.SelectableItem
+import com.ansar.autoPartsApp.base.ext.CustomText
 import com.ansar.autoPartsApp.base.ext.clickableRound
 import com.ansar.autoPartsApp.base.ext.ifBlank
 import com.ansar.autoPartsApp.base.ext.top
@@ -69,6 +71,7 @@ import com.ansar.autoPartsApp.features.auth.AuthScreen
 import com.ansar.autoPartsApp.features.product.ProductScreen
 import com.ansar.autoPartsApp.uikit.designe.AutoComplete
 import com.ansar.autoPartsApp.uikit.designe.BaseTextFiled
+import com.ansar.autoPartsApp.uikit.designe.fixTextOffsetForIOS
 import com.ansar.autoPartsApp.uikit.screens.PageContainer
 import com.ansar.autoPartsApp.uikit.theme.AppTheme
 import com.ansar.autoparts.images.AppResourceImages
@@ -117,7 +120,7 @@ class MainScreen : Screen {
 //                            backgroundColor = AppTheme.colors.mainColor
 //                        ) {
 //                            Box(Modifier.fillMaxHeight()) {
-//                                Text(
+//                                CustomText(
 //                                    modifier = Modifier.align(Alignment.Center)
 //                                        .padding(horizontal = 8.dp, vertical = 4.dp),
 //                                    text = "Заводской каталог",
@@ -146,7 +149,7 @@ class MainScreen : Screen {
 //                            backgroundColor = AppTheme.colors.mainColor
 //                        ) {
 //                            Box(Modifier.fillMaxHeight()) {
-//                                Text(
+//                                CustomText(
 //                                    modifier = Modifier.align(Alignment.Center)
 //                                        .padding(horizontal = 8.dp, vertical = 4.dp),
 //                                    text = "Отбор по бренду",
@@ -180,7 +183,7 @@ class MainScreen : Screen {
                                 backgroundColor = AppTheme.colors.mainColor
                             ) {
                                 Box(Modifier.fillMaxHeight()) {
-                                    Text(
+                                    CustomText(
                                         modifier = Modifier.align(Alignment.Center)
                                             .padding(horizontal = 8.dp, vertical = 4.dp),
                                         text = state.model.find { it.isSelected }?.data?.title.orEmpty(),
@@ -253,7 +256,7 @@ class MainScreen : Screen {
                 },
                 content = {
                     Box(Modifier.fillMaxSize()) {
-                        Text(
+                        CustomText(
                             modifier = Modifier.align(Alignment.Center)
                                 .padding(horizontal = 16.dp),
                             text = if (state.emptyText) "По вашему запросу ничего не найдено" else "",
@@ -266,8 +269,7 @@ class MainScreen : Screen {
                     }
                     LazyColumn(
                         state = lazyListState,
-                        contentPadding = PaddingValues(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                        contentPadding = PaddingValues(vertical = 16.dp),
                     ) {
                         items(state.products) {
                             Item(Modifier.clickableRound(8.dp) {
@@ -337,8 +339,9 @@ class MainScreen : Screen {
                                     showRightDialog = false
                                     viewModel.products()
                                 },
+                                contentAlignment = Alignment.Center
                             ) {
-                                Text(
+                                CustomText(
                                     modifier = Modifier.align(Alignment.Center)
                                         .padding(horizontal = 8.dp, vertical = 4.dp),
                                     text = "Готово",
@@ -356,8 +359,9 @@ class MainScreen : Screen {
                                 ).clickableRound(8.dp) {
                                     viewModel.clearFilter()
                                 },
+                                contentAlignment = Alignment.Center,
                             ) {
-                                Text(
+                                CustomText(
                                     modifier = Modifier.align(Alignment.Center)
                                         .padding(horizontal = 8.dp, vertical = 4.dp),
                                     text = "Сбросить",
@@ -370,11 +374,21 @@ class MainScreen : Screen {
                             }
                         }
 
+                        CustomText(
+                            modifier = Modifier.padding(top = 16.dp)
+                                .padding(horizontal = 8.dp),
+                            text = "Фильтр",
+                            style = AppTheme.typography.semiBold.copy(
+                                fontSize = 18.sp,
+                                color = AppTheme.colors.white,
+                                textAlign = TextAlign.Center,
+                            )
+                        )
+                        Spacer(Modifier.padding(8.dp))
                         LazyColumn(Modifier.background(AppTheme.colors.mainColor)) {
-
                             item {
                                 AutoComplete(
-                                    modifier = Modifier.top(32.dp),
+                                    modifier = Modifier,
                                     expanded = state.catalogSelected,
                                     title = "Каталог",
                                     hint = "Каталог",
@@ -467,7 +481,7 @@ private fun Chip(title: String, selected: Boolean, onClick: () -> Unit) {
             onClick()
         },
     ) {
-        Text(
+        CustomText(
             modifier = Modifier.align(Alignment.Center).padding(horizontal = 8.dp, vertical = 4.dp),
             text = title,
             style = AppTheme.typography.semiBold.copy(
@@ -491,7 +505,7 @@ fun Item(modifier: Modifier, item: ProductUI) {
         )
     ) {
         Column {
-            Table(title = "Код", description = item.id.toString().ifBlank { "-" })
+//            Table(title = "Код", description = item.id.toString().ifBlank { "-" })
 //            Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)
 //            Table(title = "Артикул", description = item.article.ifBlank { "-" })
             Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)
@@ -506,7 +520,7 @@ fun Item(modifier: Modifier, item: ProductUI) {
             Table(title = "Цена", description = item.price.ifBlank { "-" })
             if (item.isAvailable == 0) {
                 Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)
-                Text(
+                CustomText(
                     modifier = Modifier.align(Alignment.CenterHorizontally),
                     text = "Нет в наличии",
                     style = AppTheme.typography.bold.copy(
@@ -530,14 +544,10 @@ private fun Table(title: String, description: String) {
     Row(modifier = Modifier) {
 //            Divider(Modifier.width(1.dp).height(size), color = AppTheme.colors.border)
         Box(
-            modifier = Modifier.weight(0.2f).onSizeChanged {
-                with(density) {
-                    size = it.height.toDp()
-                }
-            }
+            modifier = Modifier.weight(0.2f)
         ) {
-            Text(
-                modifier = Modifier.padding(horizontal = 4.dp),
+            CustomText(
+                modifier = Modifier.padding(horizontal = 4.dp).align(Alignment.CenterStart),
                 text = title,
                 style = AppTheme.typography.bold.copy(
                     fontSize = 12.sp,
@@ -549,17 +559,19 @@ private fun Table(title: String, description: String) {
         }
         Divider(Modifier.width(1.dp).height(size), color = AppTheme.colors.border)
         Box(
-            modifier = Modifier.weight(0.3f)
+            modifier = Modifier.weight(0.4f).onSizeChanged {
+                with(density) {
+                    size = it.height.toDp()
+                }
+            }
         ) {
-            Text(
-                modifier = Modifier.padding(horizontal = 4.dp),
+            CustomText(
+                modifier = Modifier.padding(horizontal = 4.dp).align(Alignment.CenterStart),
                 text = description,
                 style = AppTheme.typography.medium.copy(
                     fontSize = 12.sp,
                     color = AppTheme.colors.text,
                 ),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
             )
         }
 //            Divider(Modifier.width(1.dp).height(size), color = AppTheme.colors.border)
