@@ -10,5 +10,6 @@ internal val apiModule = module {
     factory { get<Ktorfit>().create<FilterApi>() }
     factory { get<Ktorfit>().create<ProductApi>() }
     factory { get<Ktorfit>().create<OrderApi>() }
+    factory { get<Ktorfit>().create<BasketApi>() }
 
 }

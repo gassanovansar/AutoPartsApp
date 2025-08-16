@@ -538,7 +538,7 @@ fun Item(modifier: Modifier, item: ProductUI) {
 }
 
 @Composable
-private fun Table(title: String, description: String) {
+fun Table(title: String, description: String) {
     var size by remember { mutableStateOf(0.dp) }
     val density = LocalDensity.current
     Row(modifier = Modifier) {

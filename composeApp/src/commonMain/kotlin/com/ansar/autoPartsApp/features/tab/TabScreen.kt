@@ -86,6 +86,9 @@ class TabScreen(private val tab: Tab = MainTabScreen) : Screen, KoinComponent {
                                     .background(AppTheme.colors.mainColor)
                             ) {
                                 TabNavItem(MainTabScreen)
+                                TabNavItem(BasketTabScreen) {
+                                    it.replaceAll(AuthScreen())
+                                }
                                 TabNavItem(HistoryTabScreen) {
                                     it.replaceAll(AuthScreen())
                                 }

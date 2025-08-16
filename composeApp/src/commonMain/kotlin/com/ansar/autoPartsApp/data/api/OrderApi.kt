@@ -12,11 +12,8 @@ import de.jensklingenberg.ktorfit.http.Query
 interface OrderApi {
 
     @POST("v1/order/create")
-    @FormUrlEncoded
-    suspend fun createOrder(
-        @Field("productId") productId: Int,
-        @Field("count") count: Int,
-    )
+//    @FormUrlEncoded
+    suspend fun createOrder()
 
     @GET("v1/order/index")
     suspend fun orders(

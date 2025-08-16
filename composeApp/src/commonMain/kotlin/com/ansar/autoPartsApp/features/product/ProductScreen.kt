@@ -106,7 +106,7 @@ class ProductScreen(private val id: Int) : Screen {
                         }
                     }
                     PrimaryButton(
-                        text = "Заказать",
+                        text = "Добавить в корзину",
                         modifier = Modifier.fillMaxWidth().padding(16.dp),
                         enabled = state.product.isAvailable > 0
                     ) {

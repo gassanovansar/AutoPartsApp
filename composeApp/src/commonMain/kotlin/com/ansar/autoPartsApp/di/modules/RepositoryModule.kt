@@ -11,5 +11,6 @@ internal val repositoryModule = module {
     factoryOf(::FilterRepositoryImpl) { bind<FilterRepository>() }
     factoryOf(::ProductRepositoryImpl) { bind<ProductRepository>() }
     factoryOf(::OrderRepositoryImpl) { bind<OrderRepository>() }
+    factoryOf(::BasketRepositoryImpl) { bind<BasketRepository>() }
 
 }

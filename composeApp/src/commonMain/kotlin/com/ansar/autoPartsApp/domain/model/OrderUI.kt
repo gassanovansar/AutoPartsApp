@@ -1,11 +1,10 @@
 package com.ansar.autoPartsApp.domain.model
 
+import com.ansar.autoPartsApp.data.model.CartsResponse
 
-
-data class OrderUI(
+class OrderUI(
     val id: Int,
-    val product: ProductUI,
-    val count: Int,
     val price: String,
-    val status: String
+    val status: String,
+    val cart: List<CartUI>,
 )
