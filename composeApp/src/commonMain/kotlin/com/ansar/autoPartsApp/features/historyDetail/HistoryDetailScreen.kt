@@ -106,9 +106,7 @@ class HistoryDetailScreen(private val item: OrderUI? = null) : Screen {
                 Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)
                 Table(title = "Бренд", description = item.product.brand.title.ifBlank { "-" })
                 Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)
-                Table(title = "Цена", description = item.product.price.ifBlank { "-" })
-                Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)
-                Table(title = "Cумма", description = item.product.price.ifBlank { "-" })
+                Table(title = "Цена", description = item.product.price.toString().ifBlank { "-" })
                 Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)
                 Table(title = "Количество", description = "${item.count} ${item.product.unit}")
             }

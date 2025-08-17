@@ -10,7 +10,7 @@ import kotlinx.coroutines.CoroutineScope
 internal class PlusUseCase(private val repository: BasketRepository) :
     BaseUseCase<PlusUseCase.Params, Unit>() {
     class Params(
-        val productId: Int,
+        val productId: Int
     )
 
     override suspend fun execute(

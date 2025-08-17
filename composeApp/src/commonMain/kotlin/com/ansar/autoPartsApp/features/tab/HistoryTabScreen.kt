@@ -25,6 +25,6 @@ internal object HistoryTabScreen : Tab {
         get() = TabOptions(
             index = 1.toUShort(),
             title = "История",
-            icon = AppResourceImages.purchases.painterResource()
+            icon = AppResourceImages.history.painterResource()
         )
 }

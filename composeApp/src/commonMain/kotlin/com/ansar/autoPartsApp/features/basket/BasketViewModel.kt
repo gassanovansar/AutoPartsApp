@@ -1,5 +1,7 @@
 package com.ansar.autoPartsApp.features.basket
 
+import cafe.adriel.voyager.core.model.screenModelScope
+import com.ansar.autoPartsApp.base.ext.debounce
 import com.ansar.autoPartsApp.base.utils.BaseScreenModel
 import com.ansar.autoPartsApp.domain.useCase.AddCartUseCase
 import com.ansar.autoPartsApp.domain.useCase.CartsUseCase
@@ -41,26 +43,23 @@ class BasketViewModel : BaseScreenModel<BasketState, BasketEvent>(BasketState.De
     }
 
     fun addCount(id: Int) = intent {
-        state.cart.find { it.product.id == id }?.count?.let {
+        state.cart.find { it.product.id == id }.let { item ->
             launchOperation(operation = { scope ->
                 plusUseCase(scope, PlusUseCase.Params(id))
-            }, success = {
-                carts()
-//                reduceLocal {
-//                    state.copy(
-//                        cart = state.cart.map {
-//                            if (id == it.product.id) {
-//                                it.copy(
-//                                    count = it.count + 1
-//                                )
-//                            } else it
-//                        }
-//                    )
-//                }
-            })
+            }, success = {}, loading = {})
+            reduceLocal {
+                state.copy(
+                    cart = state.cart.map {
+                        if (id == it.product.id) {
+                            it.copy(
+                                count = it.count + 1
+                            )
+                        } else it
+                    },
+                    price = state.price + (item?.product?.price ?: 0)
+                )
+            }
         }
-
-
     }
 
     fun createTransaction() = intent {
@@ -82,39 +81,48 @@ class BasketViewModel : BaseScreenModel<BasketState, BasketEvent>(BasketState.De
     fun delete(id: Int) = intent {
         launchOperation(operation = { scope ->
             deleteCartUseCase(scope, DeleteCartUseCase.Params(id))
-        }, success = { _ ->
-//            reduceLocal { state.copy(cart = state.cart.filter { it.product.id != id }) }
-            carts()
-        })
+        }, success = { }, loading = {})
+        state.cart.find { it.product.id == id }.let { item ->
+            reduceLocal {
+                state.copy(
+                    cart = state.cart.filter { it.product.id != id },
+                    price = state.price - ((item?.product?.price ?: 0) * (item?.count ?: 0))
+                )
+            }
+        }
     }
 
     fun removeCount(id: Int) = intent {
-        state.cart.find { it.product.id == id }?.count?.let {
-            if (it <= 1) {
+        state.cart.find { it.product.id == id }.let { item ->
+            if ((item?.count ?: 0) <= 1) {
                 launchOperation(operation = { scope ->
                     deleteCartUseCase(scope, DeleteCartUseCase.Params(id))
-                }, success = { _ ->
-//                    reduceLocal { state.copy(cart = state.cart.filter { it.product.id != id }) }
-                    carts()
-                })
+                }, success = {}, loading = {})
             } else {
                 launchOperation(operation = { scope ->
                     minusUseCase(scope, MinusUseCase.Params(id))
-                }, success = {
-//                    reduceLocal {
-//                        state.copy(
-//                            cart = state.cart.map {
-//                                if (id == it.product.id) {
-//                                    it.copy(
-//                                        count = it.count - 1
-//                                    )
-//                                } else it
-//                            }
-//                        )
-//                    }
-                    carts()
-                })
-
+                }, success = {}, loading = {})
+            }
+            if ((item?.count ?: 0) <= 1) {
+                reduceLocal {
+                    state.copy(
+                        cart = state.cart.filter { it.product.id != id },
+                        price = state.price - (item?.product?.price ?: 0)
+                    )
+                }
+            } else {
+                reduceLocal {
+                    state.copy(
+                        cart = state.cart.map {
+                            if (id == it.product.id) {
+                                it.copy(
+                                    count = it.count - 1
+                                )
+                            } else it
+                        },
+                        price = state.price - (item?.product?.price ?: 0)
+                    )
+                }
             }
         }
     }

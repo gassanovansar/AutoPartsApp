@@ -154,7 +154,7 @@ class BasketScreen : Screen {
                 Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)
                 Table(title = "Наименование", description = item.product.title.ifBlank { "-" })
                 Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)
-                Table(title = "Цена", description = item.product.price.ifBlank { "-" })
+                Table(title = "Цена", description = item.product.price.toString().ifBlank { "-" })
                 Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)
                 Row(modifier = Modifier.align(Alignment.End).padding(8.dp)) {
                     Box(

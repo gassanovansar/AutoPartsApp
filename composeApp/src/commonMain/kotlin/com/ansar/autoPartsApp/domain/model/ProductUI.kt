@@ -21,7 +21,7 @@ class ProductUI(
     val brand: BrandUI,
     val category: CategoryUI,
     val model: CategoryUI,
-    val price: String,
+    val price: Int,
     val isAvailable: Int,
 ) {
     companion object {
@@ -34,7 +34,7 @@ class ProductUI(
                 linkOzon = "",
                 brand = BrandUI.Default,
                 category = CategoryUI.Default,
-                price = "",
+                price = 0,
                 article = "",
                 oem = "",
                 unit = "",

@@ -15,7 +15,7 @@ fun ProductResponse.toUI(): ProductUI {
         linkOzon = it.linkOzon.orEmpty(),
         brand = BrandUI(id = it.brand?.id ?: 0, title = it.brand?.title.orEmpty()),
         category = CategoryUI(it.category?.id ?: 0, it.category?.title.orEmpty()),
-        price = it.price.orEmpty(),
+        price = it.price?:0,
         article = it.article.orEmpty(),
         oem = it.oem.orEmpty(),
         unit = it.unit.orEmpty(),
