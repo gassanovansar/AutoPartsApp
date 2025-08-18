@@ -26,6 +26,9 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import com.ansar.autoPartsApp.base.ext.clickableRound
 import com.ansar.autoPartsApp.features.main.Item
 import com.ansar.autoPartsApp.uikit.designe.AppTextFiledType
@@ -37,6 +40,7 @@ import com.ansar.autoPartsApp.uikit.screens.PageContainer
 import com.ansar.autoPartsApp.uikit.theme.AppTheme
 import com.ansar.autoparts.images.AppResourceImages
 import io.github.skeptick.libres.compose.painterResource
+import kotlinx.coroutines.launch
 
 class ProductScreen(private val id: Int) : Screen {
 
@@ -46,8 +50,14 @@ class ProductScreen(private val id: Int) : Screen {
         val density = LocalDensity.current
         val viewModel = rememberScreenModel { ProductViewModel() }
         val state by viewModel.stateFlow.collectAsState()
+        val navigator = LocalNavigator.currentOrThrow
         LaunchedEffect(viewModel) {
             viewModel.getProduct(id)
+            launch {
+                viewModel.container.sideEffectFlow.collect {
+                    handleSideEffect(navigator, it)
+                }
+            }
         }
 
         PageContainer(
@@ -114,5 +124,11 @@ class ProductScreen(private val id: Int) : Screen {
                     }
                 }
             })
+    }
+
+    private fun handleSideEffect(navigator: Navigator, sideEffect: ProductEvent) {
+        when (sideEffect) {
+            ProductEvent.Back -> navigator.pop()
+        }
     }
 }

@@ -27,6 +27,7 @@ class ProductViewModel : BaseScreenModel<ProductState, ProductEvent>(ProductStat
             launchOperation(operation = { scope ->
                 addCartUseCase(scope, AddCartUseCase.Params(id, state.count.toInt()))
             }, success = {
+                postSideEffectLocal(ProductEvent.Back)
                 showGlobalMessage(Notification.Success(message = "Товар перенесен в корзину"))
             })
         } else {
