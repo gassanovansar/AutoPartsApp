@@ -48,6 +48,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.LineHeightStyle
@@ -170,7 +171,7 @@ class MainScreen : Screen {
                             modifier = Modifier.padding(top = 8.dp)
                         ) {
                             Card(
-                                modifier = Modifier.height(size).width(80.dp).clickableRound(
+                                modifier = Modifier.height(size).width(90.dp).clickableRound(
                                     clip = RoundedCornerShape(
                                         topEnd = 8.dp,
                                         bottomEnd = 8.dp
@@ -182,10 +183,10 @@ class MainScreen : Screen {
                                 border = BorderStroke(2.dp, AppTheme.colors.borderClick),
                                 backgroundColor = AppTheme.colors.mainColor
                             ) {
-                                Box(Modifier.fillMaxHeight()) {
+                                Row(Modifier.fillMaxHeight()) {
                                     CustomText(
-                                        modifier = Modifier.align(Alignment.Center)
-                                            .padding(horizontal = 8.dp, vertical = 4.dp),
+                                        modifier = Modifier.fillMaxWidth().align(Alignment.CenterVertically)
+                                            .padding(vertical = 4.dp).padding(start = 8.dp).weight(1f),
                                         text = state.model.find { it.isSelected }?.data?.title.orEmpty(),
                                         style = AppTheme.typography.semiBold.copy(
                                             fontSize = 16.sp,
@@ -194,6 +195,12 @@ class MainScreen : Screen {
                                         ),
                                         maxLines = 1,
                                         overflow = TextOverflow.Ellipsis
+                                    )
+                                    Image(
+                                        painter = AppResourceImages.arrowright.painterResource(),
+                                        contentDescription = null,
+                                        modifier = Modifier.align(Alignment.CenterVertically).padding(end = 8.dp),
+                                        colorFilter = ColorFilter.tint(AppTheme.colors.white)
                                     )
                                 }
 
@@ -375,7 +382,8 @@ class MainScreen : Screen {
                         }
 
                         CustomText(
-                            modifier = Modifier.padding(top = 16.dp).align(Alignment.CenterHorizontally)
+                            modifier = Modifier.padding(top = 16.dp)
+                                .align(Alignment.CenterHorizontally)
                                 .padding(horizontal = 8.dp),
                             text = "Фильтр",
                             style = AppTheme.typography.semiBold.copy(
