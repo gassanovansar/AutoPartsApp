@@ -1,3 +1,4 @@
+
 plugins {
     alias(libs.plugins.multiplatform)
     alias(libs.plugins.compose.compiler)
@@ -22,6 +23,8 @@ kotlin {
 //            }
 //        }
     }
+
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -136,7 +139,7 @@ kotlin {
     }
 }
 dependencies {
-    val ktorfitVersion = libs.versions.ktorfit.asProvider().get()
+    val ktorfitVersion = "2.6.4"//libs.versions.ktorfit.asProvider().get()
     add("kspCommonMainMetadata", "de.jensklingenberg.ktorfit:ktorfit-ksp:$ktorfitVersion")
     add("kspAndroid", "de.jensklingenberg.ktorfit:ktorfit-ksp:$ktorfitVersion")
     add("kspIosX64", "de.jensklingenberg.ktorfit:ktorfit-ksp:$ktorfitVersion")
@@ -159,15 +162,20 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
+
+//    kotlinOptions {
+//        jvmTarget = "17"
+//    }
+
     buildFeatures {
         compose = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.4"
-    }
+//    composeOptions {
+//        kotlinCompilerExtensionVersion = "1.5.4"
+//    }
 }
 libres {
     generatedClassName = "AppResource" // "Res" by default
@@ -176,3 +184,14 @@ libres {
     camelCaseNamesForAppleFramework = true // false by default
 }
 
+//project.tasks.withType<KspAATask>().configureEach {
+//    if (name != "kspCommonMainKotlinMetadata") {
+//        dependsOn("kspCommonMainKotlinMetadata")
+//    }
+//}
+//
+//project.tasks.withType(KotlinCompilationTask::class.java).configureEach {
+//    if (name != "kspCommonMainKotlinMetadata") {
+//        dependsOn("kspCommonMainKotlinMetadata")
+//    }
+//}

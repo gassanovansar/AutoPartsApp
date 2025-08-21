@@ -30,10 +30,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.LineHeightStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ansar.autoPartsApp.base.ext.CustomText
 import com.ansar.autoPartsApp.base.ext.clickableRound
+import com.ansar.autoPartsApp.base.ext.iosExtraVerticalPadding
 import com.ansar.autoPartsApp.uikit.theme.AppTheme
 import com.ansar.autoparts.AppResource
 import io.github.skeptick.libres.compose.painterResource
@@ -76,7 +78,7 @@ fun BaseTextFiled(
     ) {
         Row(modifier = Modifier.background(errorColor)) {
             BasicTextField(
-                modifier = Modifier.fillMaxWidth().background(errorColor)
+                modifier = Modifier.fillMaxWidth().background(errorColor).align(Alignment.CenterVertically)
                     .padding(if (mini) 8.dp else 16.dp)
                     .onFocusChanged { focusState ->
                         isFocused = focusState.isFocused
@@ -97,10 +99,7 @@ fun BaseTextFiled(
                 textStyle = AppTheme.typography.medium.copy(
                     fontSize = 16.sp,
                     color = AppTheme.colors.text,
-                    lineHeightStyle = LineHeightStyle(
-                        alignment = LineHeightStyle.Alignment.Center,
-                        trim = LineHeightStyle.Trim.None,
-                    )
+                    textAlign = TextAlign.Justify
                 ),
                 singleLine = true,
                 maxLines = 1,

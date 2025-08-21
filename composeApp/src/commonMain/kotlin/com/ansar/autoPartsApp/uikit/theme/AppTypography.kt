@@ -1,5 +1,6 @@
 package com.ansar.autoPartsApp.uikit.theme
 
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.text.PlatformParagraphStyle
@@ -34,10 +35,10 @@ class AppTypography(
 @Composable
 fun textStyles(): AppTypography {
     return AppTypography(
-        regular = AppFonts.regular.getComposeTextStyle(),
-        medium = AppFonts.medium.getComposeTextStyle(),
-        semiBold = AppFonts.semiBold.getComposeTextStyle(),
-        bold = AppFonts.bold.getComposeTextStyle(),
+        regular = MaterialTheme.typography.body1,
+        medium = MaterialTheme.typography.body1,
+        semiBold = MaterialTheme.typography.body1,
+        bold = MaterialTheme.typography.body1,
 //        black = AppFonts.black.getComposeTextStyle(),
     )
 }

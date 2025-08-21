@@ -3,8 +3,10 @@ package com.ansar.autoPartsApp.uikit.screens
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import kotlin.time.ExperimentalTime
 
 
+@OptIn(ExperimentalTime::class)
 fun Long.toDate(): Triple<Int, Int, Int> {
     val date = Instant.fromEpochMilliseconds(this).toLocalDateTime(TimeZone.currentSystemDefault())
     return Triple(date.dayOfMonth, date.monthNumber, date.year)
@@ -14,6 +16,7 @@ fun Int.toZero(): String {
     return if (this >= 10) this.toString() else "0$this"
 }
 
+@OptIn(ExperimentalTime::class)
 fun Long.toTime(): Pair<Int, Int> {
     val date = Instant.fromEpochMilliseconds(this).toLocalDateTime(TimeZone.currentSystemDefault())
     return Pair(date.hour, date.minute)
