@@ -6,7 +6,7 @@ import io.ktor.client.request.forms.formData
 import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
 import io.ktor.http.content.PartData
-import io.ktor.util.InternalAPI
+import io.ktor.utils.io.InternalAPI
 
 
 fun multipart(files: List<FormFull>): MultiPartFormDataContent {
@@ -18,7 +18,7 @@ fun formData(files: List<FormFull>): List<PartData> {
     return createFormData(files)
 }
 
-@OptIn(InternalAPI::class)
+@OptIn( InternalAPI::class)
 fun createFormData(files: List<FormFull>): List<PartData> {
     return formData {
         files.forEach {

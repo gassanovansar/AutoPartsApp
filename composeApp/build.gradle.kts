@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.multiplatform)
+    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.compose)
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlinx.serialization)
@@ -9,17 +10,17 @@ plugins {
     alias(libs.plugins.ktorfit)
 }
 
-configure<de.jensklingenberg.ktorfit.gradle.KtorfitGradleConfiguration> {
-    version = libs.versions.ktorfit.asProvider().get()
-}
+//configure<de.jensklingenberg.ktorfit.gradle.KtorfitGradleConfiguration> {
+//    version = libs.versions.ktorfit.asProvider().get()
+//}
 
 kotlin {
     androidTarget {
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = "17"
-            }
-        }
+//        compilations.all {
+//            kotlinOptions {
+//                jvmTarget = "17"
+//            }
+//        }
     }
     listOf(
         iosX64(),
@@ -154,7 +155,7 @@ android {
         applicationId = "ccom.ansar.autoparts"
         versionCode = 4
         versionName = "0.0.4"
-        setProperty("archivesBaseName", "autoparts-${versionName}")
+//        setProperty("archivesBaseName", "autoparts-${versionName}")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     compileOptions {
@@ -174,3 +175,4 @@ libres {
     baseLocaleLanguageCode = "ru" // "en" by default
     camelCaseNamesForAppleFramework = true // false by default
 }
+
