@@ -1,26 +1,32 @@
 [versions]
 
-kotlin = "1.9.21"
-compose = "1.5.11"
-agp = "8.6.0"
-androidx-activityCompose = "1.8.1"
+kotlin = "2.2.20-RC"
+compose = "1.9.0-beta03"
+agp = "8.10.0"
+androidx-activityCompose = "1.10.1"
 voyager = "1.0.0"
-koin = "3.5.3"
-ktorfit = "1.11.1"
-ksp = "1.9.21-1.0.15"
-ktorfit-plugin = "1.0.0"
-ktor = "2.3.7"
+koin = "4.1.0"
+ktorfit = "2.6.4"
+ksp = "2.2.20-RC-2.0.2"
+ktorfit-plugin = "2.6.4"
+ktor = "3.2.3"
 ktor-ext = "2.3.5"
 kotlinx-serialization = "1.6.2"
 multiplatformSettings = "1.1.1"
 okhttp = "4.11.0"
 chucker = "4.0.0"
-libres = "1.2.1"
+#libres = "1.2.4"
+libres = "2.0.0-alpha02"
 orbit-core = "6.0.0"
-coil = "2.4.0"
-coil3 = "3.0.0-alpha06"
+coil3 = "3.3.0"
 camera = "1.3.0"
-kotlinx-datetime = "0.4.0"
+kotlinx-datetime = "0.7.1"
+coreKtx = "1.10.1"
+junit = "4.13.2"
+junitVersion = "1.1.5"
+espressoCore = "3.5.1"
+appcompat = "1.6.1"
+material = "1.10.0"
 
 
 
@@ -48,9 +54,8 @@ koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = 
 jensklingenberg-ktorfit = { group = "de.jensklingenberg.ktorfit", name = "ktorfit-lib", version.ref = "ktorfit" }
 
 #coil
-coil = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 coil3 = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil3" }
-coil3-ktor = { module = "io.coil-kt.coil3:coil-network-ktor", version.ref = "coil3" }
+coil3-ktor = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil3" }
 
 #camera
 camera-camera2 = { group = "androidx.camera", name = "camera-camera2", version.ref = "camera" }
@@ -77,6 +82,12 @@ kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.
 
 #multiplatform Settings
 multiplatformSettings = { module = "com.russhwolf:multiplatform-settings-no-arg", version.ref = "multiplatformSettings" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 
 
@@ -84,6 +95,7 @@ multiplatformSettings = { module = "com.russhwolf:multiplatform-settings-no-arg"
 [plugins]
 
 multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 compose = { id = "org.jetbrains.compose", version.ref = "compose" }
 android-application = { id = "com.android.application", version.ref = "agp" }
 cocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
@@ -92,3 +104,5 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 libres = { id = "io.github.skeptick.libres", version.ref = "libres" }
 google-service = { id = "com.google.gms.google-services", version = "4.4.0" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

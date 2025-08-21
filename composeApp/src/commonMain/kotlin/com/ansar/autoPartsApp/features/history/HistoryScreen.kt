@@ -64,6 +64,7 @@ import com.ansar.autoPartsApp.base.ext.clickableRound
 import com.ansar.autoPartsApp.base.ext.ifBlank
 import com.ansar.autoPartsApp.base.ext.top
 import com.ansar.autoPartsApp.domain.model.OrderUI
+import com.ansar.autoPartsApp.features.historyDetail.HistoryDetailScreen
 import com.ansar.autoPartsApp.features.product.ProductScreen
 import com.ansar.autoPartsApp.uikit.designe.AutoComplete
 import com.ansar.autoPartsApp.uikit.designe.BaseTextFiled
@@ -124,7 +125,7 @@ class HistoryScreen : Screen {
                     ) {
                         items(state.orders) {
                             Item(Modifier.clickableRound(8.dp) {
-//                                navigator.push(ProductScreen(it.id))
+                                navigator.push(HistoryDetailScreen(it))
                             }, it)
                         }
                     }
@@ -146,28 +147,16 @@ fun Item(modifier: Modifier, item: OrderUI) {
         )
     ) {
         Column {
-//            Table(title = "Код", description = item.product.id.toString().ifBlank { "-" })
-//            Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)
-//            Table(title = "Артикул", description = item.product.article.ifBlank { "-" })
             Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)
-            Table(title = "OEM", description = item.product.oem.ifBlank { "-" })
+            Table(title = "Транзакция", description = item.id.toString().ifBlank { "-" })
             Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)
-            Table(
-                title = "Наименование",
-                description = item.product.title.ifBlank { "-" }
-            )
-            Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)
-            Table(title = "Бренд", description = item.product.brand.title.ifBlank { "-" })
-            Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)
-            Table(title = "Цена", description = item.product.price.ifBlank { "-" })
+            Table(title = "Статус", description = item.status.ifBlank { "-" })
             Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)
             Table(title = "Общая сумма", description = item.price.ifBlank { "-" })
-            Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)
-            Table(title = "Количество", description = "${item.count} ${item.product.unit}")
         }
-
     }
 }
+
 
 @Composable
 private fun Table(title: String, description: String) {

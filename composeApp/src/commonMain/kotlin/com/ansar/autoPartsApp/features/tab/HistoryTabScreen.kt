@@ -12,7 +12,7 @@ import io.github.skeptick.libres.compose.painterResource
 
 internal object HistoryTabScreen : Tab {
 
-    override val key: ScreenKey = "MainTabScreen"
+    override val key: ScreenKey = "HistoryTabScreen"
 
     @Composable
     override fun Content() {
@@ -25,6 +25,6 @@ internal object HistoryTabScreen : Tab {
         get() = TabOptions(
             index = 1.toUShort(),
             title = "История",
-            icon = AppResourceImages.purchases.painterResource()
+            icon = AppResourceImages.history.painterResource()
         )
 }

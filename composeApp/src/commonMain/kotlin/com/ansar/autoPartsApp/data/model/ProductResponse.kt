@@ -28,7 +28,7 @@ class ProductResponse(
     val linkOzon: String?,
     val brand: BrandResponse?,
     val category: BrandResponse?,
-    val price: String?,
+    val price: Int?,
     val article: String?,
     val oem: String?,
     val unit: String?,

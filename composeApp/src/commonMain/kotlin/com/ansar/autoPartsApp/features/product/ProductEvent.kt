@@ -1,4 +1,5 @@
 package com.ansar.autoPartsApp.features.product
 
-class ProductEvent {
+sealed interface ProductEvent {
+    data object Back : ProductEvent
 }

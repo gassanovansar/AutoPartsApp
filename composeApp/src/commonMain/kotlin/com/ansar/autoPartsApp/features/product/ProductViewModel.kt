@@ -2,6 +2,7 @@ package com.ansar.autoPartsApp.features.product
 
 import com.ansar.autoPartsApp.base.utils.BaseScreenModel
 import com.ansar.autoPartsApp.domain.manager.Notification
+import com.ansar.autoPartsApp.domain.useCase.AddCartUseCase
 import com.ansar.autoPartsApp.domain.useCase.CreateOrderUseCase
 import com.ansar.autoPartsApp.domain.useCase.ProductUseCase
 import org.koin.core.component.inject
@@ -11,7 +12,7 @@ import org.orbitmvi.orbit.syntax.simple.reduce
 class ProductViewModel : BaseScreenModel<ProductState, ProductEvent>(ProductState.Default) {
 
     private val productUseCase: ProductUseCase by inject()
-    private val createOrderUseCase: CreateOrderUseCase by inject()
+    private val addCartUseCase: AddCartUseCase by inject()
 
     fun getProduct(id: Int) = intent {
         launchOperation(operation = { scope ->
@@ -24,9 +25,10 @@ class ProductViewModel : BaseScreenModel<ProductState, ProductEvent>(ProductStat
     fun createOrder(id: Int) = intent {
         if (state.count.isNotBlank() && state.count.toInt() > 0) {
             launchOperation(operation = { scope ->
-                createOrderUseCase(scope, CreateOrderUseCase.Params(id, state.count.toInt()))
+                addCartUseCase(scope, AddCartUseCase.Params(id, state.count.toInt()))
             }, success = {
-                showGlobalMessage(Notification.Success(message = "Заказ принят"))
+                postSideEffectLocal(ProductEvent.Back)
+                showGlobalMessage(Notification.Success(message = "Товар перенесен в корзину"))
             })
         } else {
             showGlobalMessage(Notification.Failure(message = "Необходимо указать количество"))
@@ -34,15 +36,20 @@ class ProductViewModel : BaseScreenModel<ProductState, ProductEvent>(ProductStat
     }
 
     fun addCount() = intent {
-        reduce { state.copy(
-            count = (state.count.toInt() + 1).toString()
-        ) }
+        reduce {
+            state.copy(
+                count = (state.count.toInt() + 1).toString()
+            )
+        }
     }
+
     fun removeCount() = intent {
-        if(state.count.toInt()>0){
-            reduce { state.copy(
-                count = (state.count.toInt() - 1).toString()
-            ) }
+        if (state.count.toInt() > 0) {
+            reduce {
+                state.copy(
+                    count = (state.count.toInt() - 1).toString()
+                )
+            }
         }
 
     }

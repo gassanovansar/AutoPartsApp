@@ -66,6 +66,7 @@ interface DropDown {
     val id: Int
     val title: String
 }
+
 fun Modifier.fixTextOffsetForIOS(offsetDp: Dp = (-1).dp): Modifier {
     return if (Platform.type == PlatformType.IOS) {
         this.offset(y = offsetDp)
@@ -73,6 +74,7 @@ fun Modifier.fixTextOffsetForIOS(offsetDp: Dp = (-1).dp): Modifier {
         this
     }
 }
+
 @Composable
 internal fun AutoComplete(
     modifier: Modifier = Modifier,
@@ -95,46 +97,47 @@ internal fun AutoComplete(
     val density = LocalDensity.current
 
     var _expanded by remember(expanded) { mutableStateOf(expanded) }
-    Box(modifier) {
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
-            contentPadding = PaddingValues(horizontal = 16.dp)
-        ) {
-            items(list.filter { it.isSelected }) {
-                Row(
-                    modifier = Modifier
-                        .background(AppTheme.colors.white, shape = RoundedCornerShape(16.dp))
-                        .clickableRound(16.dp) { typeOnClick(it) }
-                        .padding(horizontal = 4.dp, vertical = 2.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    CustomText(
-                        modifier = Modifier.align(Alignment.CenterVertically),
-                        text = it.data.title,
-                        style = AppTheme.typography.semiBold.copy(
-                            fontSize = 12.sp,
-                            color = AppTheme.colors.text,
-                            textAlign = TextAlign.Center,
-                        ),
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
+    Column(modifier) {
+        AnimatedVisibility(list.any { it.isSelected }) {
+            LazyRow(
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                contentPadding = PaddingValues(horizontal = 16.dp)
+            ) {
+                items(list.filter { it.isSelected }) {
+                    Row(
+                        modifier = Modifier
+                            .background(AppTheme.colors.white, shape = RoundedCornerShape(16.dp))
+                            .clickableRound(16.dp) { typeOnClick(it) }
+                            .padding(horizontal = 4.dp, vertical = 2.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        CustomText(
+                            modifier = Modifier.align(Alignment.CenterVertically),
+                            text = it.data.title,
+                            style = AppTheme.typography.semiBold.copy(
+                                fontSize = 12.sp,
+                                color = AppTheme.colors.text,
+                                textAlign = TextAlign.Center,
+                            ),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
 
-                    Spacer(modifier = Modifier.width(4.dp))
+                        Spacer(modifier = Modifier.width(4.dp))
 
-                    Image(
-                        modifier = Modifier.size(18.dp),
-                        painter = painterResource(AppResourceImages.close),
-                        contentDescription = null
-                    )
+                        Image(
+                            modifier = Modifier.size(18.dp),
+                            painter = painterResource(AppResourceImages.close),
+                            contentDescription = null
+                        )
+                    }
                 }
             }
         }
-
         Card(
             shape = RoundedCornerShape(8.dp),
             backgroundColor = AppTheme.colors.mainColor,
-            modifier = Modifier.padding(top = 32.dp).padding(start = paddingStart, end = paddingEnd)
+            modifier = Modifier.padding(top = 8.dp).padding(start = paddingStart, end = paddingEnd)
         ) {
             Column(modifier = Modifier.background(Color.Transparent).onSizeChanged {
                 with(density) {

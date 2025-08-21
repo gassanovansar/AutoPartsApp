@@ -375,7 +375,7 @@ class MainScreen : Screen {
                         }
 
                         CustomText(
-                            modifier = Modifier.padding(top = 16.dp)
+                            modifier = Modifier.padding(top = 16.dp).align(Alignment.CenterHorizontally)
                                 .padding(horizontal = 8.dp),
                             text = "Фильтр",
                             style = AppTheme.typography.semiBold.copy(
@@ -517,7 +517,7 @@ fun Item(modifier: Modifier, item: ProductUI) {
             Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)
             Table(title = "ЕИ", description = item.unit.ifBlank { "-" })
             Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)
-            Table(title = "Цена", description = item.price.ifBlank { "-" })
+            Table(title = "Цена", description = item.price.toString().ifBlank { "-" })
             if (item.isAvailable == 0) {
                 Divider(Modifier.fillMaxWidth(), color = AppTheme.colors.border)
                 CustomText(
@@ -538,7 +538,7 @@ fun Item(modifier: Modifier, item: ProductUI) {
 }
 
 @Composable
-private fun Table(title: String, description: String) {
+fun Table(title: String, description: String) {
     var size by remember { mutableStateOf(0.dp) }
     val density = LocalDensity.current
     Row(modifier = Modifier) {

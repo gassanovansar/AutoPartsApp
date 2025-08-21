@@ -5,19 +5,17 @@ import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
-import com.ansar.autoPartsApp.features.history.HistoryScreen
-import com.ansar.autoPartsApp.features.main.MainScreen
-import com.ansar.autoPartsApp.features.profile.ProfileScreen
+import com.ansar.autoPartsApp.features.basket.BasketScreen
 import com.ansar.autoparts.images.AppResourceImages
 import io.github.skeptick.libres.compose.painterResource
 
-internal object ProfileTabScreen : Tab {
+object BasketTabScreen  : Tab {
 
-    override val key: ScreenKey = "ProfileTabScreen"
+    override val key: ScreenKey = "BasketTabScreen"
 
     @Composable
     override fun Content() {
-        Navigator(ProfileScreen())
+        Navigator(BasketScreen())
     }
 
 
@@ -25,7 +23,7 @@ internal object ProfileTabScreen : Tab {
         @Composable
         get() = TabOptions(
             index = 1.toUShort(),
-            title = "Профиль",
-            icon = AppResourceImages.profile.painterResource()
+            title = "Корзина",
+            icon = AppResourceImages.purchases.painterResource()
         )
 }
