@@ -67,7 +67,7 @@ class BasketScreen : Screen {
                     CustomText(
                         modifier = Modifier.align(Alignment.Center)
                             .padding(horizontal = 16.dp),
-                        text = if (state.emptyText) "Корзина пусто." else "",
+                        text = if (state.emptyText) "Корзина пуста." else "",
                         style = AppTheme.typography.bold.copy(
                             fontSize = 24.sp,
                             color = AppTheme.colors.text,

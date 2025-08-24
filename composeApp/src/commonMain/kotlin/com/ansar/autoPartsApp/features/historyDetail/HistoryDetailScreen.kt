@@ -34,7 +34,7 @@ class HistoryDetailScreen(private val item: OrderUI? = null) : Screen {
     override fun Content() {
         PageContainer(
             header = {
-                Toolbar(title = item?.id.toString(), line = true)
+                Toolbar(title = "Заказ № 31${item?.id}", line = true)
             }, content = {
 
                 LazyColumn(
