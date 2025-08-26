@@ -1,9 +1,5 @@
 package com.ansar.autoPartsApp.features.tab
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.keyframes
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -16,10 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Divider
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
@@ -29,7 +22,6 @@ import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
-import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
@@ -40,24 +32,18 @@ import com.ansar.autoPartsApp.base.navigation.RootNavigator
 import com.ansar.autoPartsApp.features.auth.AuthScreen
 import com.ansar.autoPartsApp.uikit.screens.PageContainer
 import com.ansar.autoPartsApp.uikit.theme.AppTheme
-import kotlinx.coroutines.flow.MutableStateFlow
-import org.koin.core.component.KoinComponent
 import kotlin.random.Random
 
-class TabScreen(private val tab: Tab = MainTabScreen) : Screen, KoinComponent {
+class TabScreen(private val tab: Tab = MainTabScreen) : Screen {
 
     override val key: ScreenKey = Random.nextInt().toString()
 
-
-    companion object {
-        val hiddenBottom = MutableStateFlow(false)
-    }
 
     @Composable
     override fun Content() {
         TabNavigator(
             tab = tab,
-            disposeNestedNavigators = true
+            disposeNestedNavigators = false
         ) {
             PageContainer(
                 content = {
@@ -65,59 +51,30 @@ class TabScreen(private val tab: Tab = MainTabScreen) : Screen, KoinComponent {
                 },
                 footer = {
 
-                    val hiddenBottom by hiddenBottom.collectAsState()
-                    AnimatedVisibility(
-                        !hiddenBottom, enter = expandVertically(
-                            animationSpec = keyframes {
-                                this.durationMillis = 50
-                            }
-                        ),
-                        exit = shrinkVertically(animationSpec = keyframes {
-                            this.durationMillis = 50
-                        })
-                    ) {
-                        Column {
-                            Divider(
-                                Modifier.fillMaxWidth().height(1.dp)
-                                    .background(AppTheme.colors.mainColor)
-                            )
-                            Row(
-                                modifier = Modifier
-                                    .background(AppTheme.colors.mainColor)
-                            ) {
-                                TabNavItem(MainTabScreen)
-                                TabNavItem(BasketTabScreen) {
-                                    it.replaceAll(AuthScreen())
-                                }
-                                TabNavItem(HistoryTabScreen) {
-                                    it.replaceAll(AuthScreen())
-                                }
-                                TabNavItem(ProfileTabScreen) {
-                                    it.replaceAll(AuthScreen())
-                                }
-//                            TabNavItem(ProfileTabScreen)
-//                            val role by screenModel.sessionManager.role.collectAsState()
-//                            when (role) {
-//                                Role.USER -> {
-//                                    TabNavItem(PurchasesTabScreen)
-//                                    TabNavItem(FavouriteTabScreen)
-//                                }
-//
-//                                Role.CAPPER -> {
-//                                    TabNavItem(AddForecastTabScreen)
-////                                    {
-////                                        it.push(SubscriptionScreen(SubscriptionNav.CREATE_FORECAST))
-////                                    }
-//                                    TabNavItem(MySalesTabScreen)
-//                                }
-//                            }
 
-//                            TabNavItem(MenuTabScreen)
+                    Column {
+                        Divider(
+                            Modifier.fillMaxWidth().height(1.dp)
+                                .background(AppTheme.colors.mainColor)
+                        )
+                        Row(
+                            modifier = Modifier
+                                .background(AppTheme.colors.mainColor)
+                        ) {
+                            TabNavItem(MainTabScreen)
+                            TabNavItem(BasketTabScreen) {
+                                it.replaceAll(AuthScreen())
                             }
-
+                            TabNavItem(HistoryTabScreen) {
+                                it.replaceAll(AuthScreen())
+                            }
+                            TabNavItem(ProfileTabScreen) {
+                                it.replaceAll(AuthScreen())
+                            }
                         }
 
                     }
+
 
                 }
             )
@@ -128,7 +85,6 @@ class TabScreen(private val tab: Tab = MainTabScreen) : Screen, KoinComponent {
     private fun RowScope.TabNavItem(tab: Tab, onClick: ((Navigator) -> Unit)? = null) {
         val screenModel = rememberScreenModel { TabScreenModel() }
         val tabNavigator = LocalTabNavigator.current
-        val navigator = LocalNavigator.currentOrThrow
         val rootNavigator = RootNavigator.currentOrThrow
         val selected = tabNavigator.current == tab
         val color = if (selected) AppTheme.colors.white else AppTheme.colors.mainColor

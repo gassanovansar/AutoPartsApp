@@ -27,6 +27,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.ansar.autoPartsApp.base.ext.CustomText
+import com.ansar.autoPartsApp.base.navigation.RootNavigator
 import com.ansar.autoPartsApp.features.main.MainScreen
 import com.ansar.autoPartsApp.features.tab.TabScreen
 import com.ansar.autoPartsApp.uikit.screens.PageContainer
@@ -45,6 +46,7 @@ class AuthScreen : Screen {
     override fun Content() {
         val viewModel = rememberScreenModel { AuthViewModel() }
         val state by viewModel.stateFlow.collectAsState()
+        val rootNavigator = RootNavigator.currentOrThrow
         val navigator = LocalNavigator.currentOrThrow
         LaunchedEffect(viewModel) {
             launch {
@@ -65,7 +67,7 @@ class AuthScreen : Screen {
                             color = AppTheme.colors.text
                         ),
                         modifier = Modifier.clickable {
-                            navigator.replaceAll(TabScreen())
+                            rootNavigator.replaceAll(TabScreen())
                         },
                         textAlign = TextAlign.Center
                     )
