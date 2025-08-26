@@ -1,4 +1,4 @@
-package com.gntit.capperru.di.modules
+package com.ansar.autoPartsApp.di.modules
 
 
 import com.ansar.autoPartsApp.base.utils.Failure
@@ -31,9 +31,9 @@ import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
 enum class Env(val value: String, val url: String) {
-    DEV("dev", "https://dextra-backend-api.x-lab.digital/"),
-    STAGE("stage", "https://dextra-backend-api.x-lab.digital/"),
-    PROD("prod", "https://dextra-backend-api.x-lab.digital/")
+    DEV("dev", "https://autoparts-api.dextra-parts.ru/"),
+    STAGE("stage", "https://autoparts-api.dextra-parts.ru/"),
+    PROD("prod", "https://autoparts-api.dextra-parts.ru/")
 }
 
 

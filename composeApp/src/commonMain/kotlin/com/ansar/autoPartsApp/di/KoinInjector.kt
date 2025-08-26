@@ -2,7 +2,7 @@ package com.ansar.autoPartsApp.di
 
 import com.ansar.autoPartsApp.di.modules.apiModule
 import com.ansar.autoPartsApp.di.modules.managerModule
-import com.gntit.capperru.di.modules.networkModule
+import com.ansar.autoPartsApp.di.modules.networkModule
 import com.ansar.autoPartsApp.di.modules.repositoryModule
 import com.ansar.autoPartsApp.di.modules.useCaseModule
 import org.koin.core.context.startKoin

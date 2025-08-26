@@ -1,7 +1,7 @@
 package com.ansar.autoPartsApp.domain.manager
 
 import com.russhwolf.settings.Settings
-import com.gntit.capperru.di.modules.Env
+import com.ansar.autoPartsApp.di.modules.Env
 
 interface EnvManager {
 
