@@ -156,8 +156,8 @@ android {
         targetSdk = 35
 
         applicationId = "ccom.ansar.autoparts"
-        versionCode = 6
-        versionName = "0.0.6"
+        versionCode = 9
+        versionName = "0.0.9"
 //        setProperty("archivesBaseName", "autoparts-${versionName}")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -172,6 +172,22 @@ android {
 
     buildFeatures {
         compose = true
+    }
+    buildTypes {
+        release {
+
+            // Enables code-related app optimization.
+            isMinifyEnabled = true
+
+            // Enables resource shrinking.
+            isShrinkResources = true
+
+            proguardFiles(
+                // Default file with automatically generated optimization rules.
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+
+            )
+        }
     }
 //    composeOptions {
 //        kotlinCompilerExtensionVersion = "1.5.4"
