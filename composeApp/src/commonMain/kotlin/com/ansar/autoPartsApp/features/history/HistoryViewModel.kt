@@ -13,12 +13,7 @@ class HistoryViewModel : BaseScreenModel<HistoryState, Any>(HistoryState.Default
 
     private val ordersUseCase: OrdersUseCase by inject()
 
-    init {
-        orders()
-    }
-
-
-    private fun orders() = intent {
+    fun orders() = intent {
         reduce { state.copy(page = 1) }
         launchOperation(operation = { scope ->
             ordersUseCase(

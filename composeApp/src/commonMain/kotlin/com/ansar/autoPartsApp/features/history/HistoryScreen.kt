@@ -93,6 +93,9 @@ class HistoryScreen : Screen {
             if (canLoad && shouldStartPaginate.value && !viewModel.status.value)
                 viewModel.loadOrders()
         }
+        LaunchedEffect(Unit){
+            viewModel.orders()
+        }
 
 
         Box(modifier = Modifier.fillMaxSize()) {

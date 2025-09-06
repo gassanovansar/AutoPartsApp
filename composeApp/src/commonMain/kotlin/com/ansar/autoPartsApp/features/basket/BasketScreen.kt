@@ -21,6 +21,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -48,6 +49,9 @@ class BasketScreen : Screen {
     override fun Content() {
         val viewModel = rememberScreenModel { BasketViewModel() }
         val state by viewModel.stateFlow.collectAsState()
+        LaunchedEffect(Unit) {
+            viewModel.carts()
+        }
         PageContainer(
             isLoading = viewModel.status.collectAsState(false),
             error = viewModel.error.collectAsState(initial = null),
@@ -101,7 +105,8 @@ class BasketScreen : Screen {
                                 .padding(top = 12.dp)
                         ) {
                             CustomText(
-                                modifier = Modifier.align(Alignment.CenterVertically).fillMaxWidth().weight(1f),
+                                modifier = Modifier.align(Alignment.CenterVertically).fillMaxWidth()
+                                    .weight(1f),
                                 text = "Общая сумма",
                                 style = AppTheme.typography.medium.copy(
                                     fontSize = 16.sp,

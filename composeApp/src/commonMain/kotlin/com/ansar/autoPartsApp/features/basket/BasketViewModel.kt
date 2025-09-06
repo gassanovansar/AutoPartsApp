@@ -24,11 +24,7 @@ class BasketViewModel : BaseScreenModel<BasketState, BasketEvent>(BasketState.De
 
     private val cleanUseCase: CleanUseCase by inject()
 
-    init {
-        carts()
-    }
-
-    private fun carts() = intent {
+    fun carts() = intent {
         launchOperation(operation = { scope ->
             cartsUseCase(scope, CartsUseCase.Params())
         }, success = {
