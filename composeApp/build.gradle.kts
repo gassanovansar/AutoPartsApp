@@ -156,8 +156,8 @@ android {
         targetSdk = 35
 
         applicationId = "ccom.ansar.autoparts"
-        versionCode = 9
-        versionName = "0.0.9"
+        versionCode = 10
+        versionName = "1.0.0"
 //        setProperty("archivesBaseName", "autoparts-${versionName}")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
