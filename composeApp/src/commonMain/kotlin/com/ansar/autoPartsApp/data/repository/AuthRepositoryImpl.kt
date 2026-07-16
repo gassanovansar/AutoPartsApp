@@ -3,8 +3,11 @@ package com.ansar.autoPartsApp.data.repository
 import com.ansar.autoPartsApp.base.utils.Either
 import com.ansar.autoPartsApp.base.utils.Failure
 import com.ansar.autoPartsApp.base.utils.apiCall
+import com.ansar.autoPartsApp.base.utils.doOnSuccess
 import com.ansar.autoPartsApp.data.api.AuthApi
 import com.ansar.autoPartsApp.domain.manager.SessionManager
+import com.ansar.autoPartsApp.domain.model.ManagerUI
+import com.ansar.autoPartsApp.domain.model.ProfileUI
 import com.ansar.autoPartsApp.domain.repository.AuthRepository
 
 class AuthRepositoryImpl(private val api: AuthApi, private val sessionManager: SessionManager) :
@@ -17,6 +20,24 @@ class AuthRepositoryImpl(private val api: AuthApi, private val sessionManager: S
             )
         }, mapResponse = {
             sessionManager.auth(it.token.orEmpty(), "")
+        }).doOnSuccess {
+            getProfile()
+        }
+    }
+
+    override suspend fun getProfile(): Either<Failure, ProfileUI> {
+        return apiCall(call = {
+            api.getProfile()
+        }, mapResponse = {
+            val profileUI = ProfileUI(
+                manager = ManagerUI(
+                    it.data?.manager?.fullName.orEmpty(),
+                    it.data?.manager?.phone.orEmpty()
+                )
+            )
+            sessionManager.profile = profileUI
+            profileUI
+
         })
     }
 }

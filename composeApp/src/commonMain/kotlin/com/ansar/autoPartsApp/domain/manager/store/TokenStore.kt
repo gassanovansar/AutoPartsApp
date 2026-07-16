@@ -1,5 +1,6 @@
 package com.ansar.autoPartsApp.domain.manager.store
 
+import com.ansar.autoPartsApp.domain.model.ProfileUI
 import com.russhwolf.settings.Settings
 import kotlinx.serialization.json.Json
 

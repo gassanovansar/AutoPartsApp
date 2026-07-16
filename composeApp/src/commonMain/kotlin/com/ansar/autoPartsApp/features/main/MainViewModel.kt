@@ -9,6 +9,7 @@ import com.ansar.autoPartsApp.domain.manager.SessionManager
 import com.ansar.autoPartsApp.domain.model.ModelUI
 import com.ansar.autoPartsApp.domain.useCase.BrandUseCase
 import com.ansar.autoPartsApp.domain.useCase.CategoryUseCase
+import com.ansar.autoPartsApp.domain.useCase.GetProfileUseCase
 import com.ansar.autoPartsApp.domain.useCase.ModelUseCase
 import com.ansar.autoPartsApp.domain.useCase.ProductsUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,9 +32,16 @@ class MainViewModel : BaseScreenModel<MainState, MainEvent>(MainState.Default) {
         brand()
         category()
         maodel()
+        getProfile()
     }
 
+    private val getProfileUseCase: GetProfileUseCase by inject()
 
+    fun getProfile() = intent {
+        launchOperation(operation = { scope ->
+            getProfileUseCase(scope, GetProfileUseCase.Params())
+        })
+    }
     fun products() = intent {
         reduce { state.copy(page = 1) }
         launchOperation(operation = { scope ->

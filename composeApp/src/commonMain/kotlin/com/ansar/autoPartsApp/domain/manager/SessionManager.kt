@@ -1,6 +1,7 @@
 package com.ansar.autoPartsApp.domain.manager
 
 import com.ansar.autoPartsApp.domain.manager.store.TokenStore
+import com.ansar.autoPartsApp.domain.model.ProfileUI
 import com.russhwolf.settings.Settings
 import com.russhwolf.settings.set
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +16,7 @@ enum class Role(val id: Int) {
 interface SessionManager {
 
     val isAuth: Boolean
-
+    var profile: ProfileUI?
     fun auth(token: String, refresh: String)
     val role: StateFlow<Role>
     fun setRole(role: Role)
@@ -58,22 +59,22 @@ class SessionManagerImpl(
         setRole(Role.entries.find { it.id == settings.getInt(ROLE, 0) } ?: Role.USER)
     }
 
-//    override var profile: ProfileUI?
-//        get() = try {
-//            val profile = settings.getString(PROFILE, "")
-//            if (profile.isBlank()) null
-//            else json.decodeFromString(ProfileUI.serializer(), profile)
-//        } catch (e: Exception) {
-//            null
-//        }
-//        set(value) {
-//            if (value != null) {
-//                val profileJson = json.encodeToString(ProfileUI.serializer(), value)
-//                settings.putString(PROFILE, profileJson)
-//            } else {
-//                settings.putString(PROFILE, "")
-//            }
-//        }
+    override var profile: ProfileUI?
+        get() = try {
+            val profile = settings.getString(PROFILE, "")
+            if (profile.isBlank()) null
+            else json.decodeFromString(ProfileUI.serializer(), profile)
+        } catch (e: Exception) {
+            null
+        }
+        set(value) {
+            if (value != null) {
+                val profileJson = json.encodeToString(ProfileUI.serializer(), value)
+                settings.putString(PROFILE, profileJson)
+            } else {
+                settings.putString(PROFILE, "")
+            }
+        }
 
     override fun setFcmToken(token: String) {
         tokenStore.fcmToken = token
@@ -84,7 +85,7 @@ class SessionManagerImpl(
         val fcmToken = tokenStore.fcmToken
         tokenStore.clear()
         setFcmToken(fcmToken)
-//        profile = null
+        profile = null
     }
 
     override fun clear() {

@@ -22,6 +22,7 @@ internal val useCaseModule = module {
     factoryOf(::PlusUseCase)
     factoryOf(::MinusUseCase)
     factoryOf(::CleanUseCase)
+    factoryOf(::GetProfileUseCase)
 
 
 }
